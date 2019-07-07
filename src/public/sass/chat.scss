@@ -1,0 +1,98 @@
+.chat-history {
+  background: #F2F5F8;
+  padding: 30px 30px 20px;
+  border-bottom: 2px solid white;
+  overflow-y: scroll;
+  height: 548px;
+
+  .msg-data {
+    margin-bottom: 15px;
+  }
+  
+  .msg-time {
+    color: lighten($gray, 8%);
+    padding: 0 10px;
+  }
+  
+  .msg {      
+    color: white;
+    padding: 18px 20px;
+    line-height: 26px;
+    font-size: 16px;
+    border-radius: 7px;
+    margin-bottom: 30px;
+    max-width: 70%;
+    position: relative;
+  }
+  
+  .my-msg {
+    background: $green;
+  }
+  
+  .other-msg {
+    background: $blue;
+    
+    img {
+      width: 100%;
+    }
+
+    &:after {
+      border-bottom-color: $blue;
+      left: 93%;
+    }
+  }
+}
+    
+.chat-input {
+  background: #F2F5F8;
+  padding: 30px;
+  display: flex;
+  
+  input {
+    width: 100%;
+    border: none;
+    padding: 10px 20px;
+    font: 14px/22px "Lato", Arial, sans-serif;
+    border-radius: 5px;
+    resize: none;
+    
+  }
+  
+  .fa-file-o, .fa-file-image-o {
+    font-size: 16px;
+    color: gray;
+    cursor: pointer;
+    
+  }
+
+  .file-input {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    width: 50px;
+    font-size: 30px;
+    color: #94C2ED;
+    border: solid 1px #94C2ED;
+
+
+    label {
+      cursor: pointer;
+    }
+  }
+  
+  button {
+    float: right;
+    color: $blue;
+    font-size: 16px;
+    text-transform: uppercase;
+    border: solid 1px #94C2ED;
+    cursor: pointer;
+    font-weight: bold;
+    background: #F2F5F8;
+    
+    &:hover {
+      color: darken($blue, 7%);
+    }
+  }
+}
+  

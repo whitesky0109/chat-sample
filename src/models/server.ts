@@ -25,3 +25,28 @@ export interface IMigrationLogs {
   // tslint:disable-next-line: variable-name
   [migration_id: string]: IMigrationLog;
 }
+
+export interface IInvite {
+  roomId: string;
+  users: string[];
+}
+
+export interface IMessage {
+  username: string;
+  type: string;
+  message: ArrayBuffer | string;
+  date: Date;
+  isMy: boolean;
+}
+
+export interface IUser {
+  [userId: string]: string;
+}
+
+export interface IRoom {
+  [roomId: string]: {
+    name: string;
+    users: IUser;
+    creator: string;
+  };
+}

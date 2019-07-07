@@ -31,6 +31,10 @@ npm run server:watch # or yarn server:watch
 npm run front:watch # or yarn front:watch
 ```
 
+## chat style idea
+
+https://codepen.io/vhtkr/pen/eaLBNK
+
 ## Reference Sites
 
 ### [API Server](https://github.com/xmlking/hub/tree/master/server)

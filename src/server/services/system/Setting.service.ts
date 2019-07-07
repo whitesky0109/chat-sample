@@ -16,14 +16,14 @@ export default class SettingService implements IService {
     return Promise.resolve();
   }
 
-    /**
-     * Create a `uid`
-     *
-     * @param { Number } len
-     * @return { String } uid
-     */
+  /**
+   * Create a `uid`
+   *
+   * @param { Number } len
+   * @return { String } uid
+   */
   public uid(len?: number): string {
-        // create uuid
+    // create uuid
     len = len || 7;
     return Math.random().toString(35).substr(2, len);
   }

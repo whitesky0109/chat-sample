@@ -24,6 +24,10 @@ module.exports = {
     server: './main.ts',
   },
 
+  resolve: {
+    extensions: [".js", ".ts", ".json"]
+  },
+
   output: {
     path: resolve('dist/server'),
     publicPath: '/',
@@ -34,12 +38,10 @@ module.exports = {
     rules: [{
       test: /\.tsx?$/,
       loader: 'ts-loader',
-      exclude: /node_modules/,
+      exclude: [
+        /node_modules/,
+      ]
     }]
-  },
-
-  resolve: {
-    extensions: [".js", ".tsx", ".ts", ".json"]
   },
 
   plugins: [

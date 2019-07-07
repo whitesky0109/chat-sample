@@ -12,12 +12,12 @@ export default class StorageMigrationService extends EventEmitter implements ISe
   private migrations: any[] = [];
 
   constructor(
-        private logger: LoggerService,
-        private storageSrv: StorageService,
+    private logger: LoggerService,
+    private storageSrv: StorageService,
 
-        /* sqlite3 table reposiotries */
-        private migrationLogRepository: migrationLogRepository,
-    ) {
+    /* sqlite3 table reposiotries */
+    private migrationLogRepository: migrationLogRepository,
+  ) {
     super();
     this.logger.info('created StorageMigrationSrv');
   }
@@ -57,26 +57,27 @@ export default class StorageMigrationService extends EventEmitter implements ISe
       if (!migrationLogs[migration_id]) {
         this.logger.info(`execute ${migration_id}`);
 
-                /* change callback function */
+        /* change callback function */
         const callback: Function = args[args.length - 1];
         args[args.length - 1] = (...params: any) => {
           const [err] = params;
           const success: boolean = !err ? true : false;
 
-                    /* double quatation이 들어간 경우 오류 발생 */
+          /* double quatation이 들어간 경우 오류 발생 */
           const error: string = err ? err.message.replace(/\"/gi, "'") : '';
           const arg: string = JSON.stringify(args.slice(0, args.length - 1)).replace(/\"/gi, "'");
 
-                    /* write migration_log */
-          this.storageSrv.db['insert']('migration_log',
-                                       ['migration_id', 'action', 'success', 'error', 'params'],
-                                       [migration_id,   action,   success,   error,   arg],
-                                       (err: any) => {
-                                         if (err) {
-                                           this.logger.error(err);
-                                         }
-                                       },
-                    );
+          /* write migration_log */
+          const { db } = this.storageSrv;
+          db['insert']('migration_log',
+                       ['migration_id', 'action', 'success', 'error', 'params'],
+                       [migration_id, action, success, error, arg],
+                       (err: any) => {
+                         if (err) {
+                           this.logger.error(err);
+                         }
+                       },
+          );
           callback.apply(this.storageSrv.db, params);
         };
 

@@ -1,19 +1,5 @@
 node_modules
 npm-debug.log
-coverage/
-.aws-config.json
-awsconfig
-/emails/dist
-/public_gen
-/tmp
-vendor/phantomjs/phantomjs
-
-docs/AWS_S3_BUCKET
-docs/GIT_BRANCH
-docs/VERSION
-docs/GITCOMMIT
-docs/changed-files
-docs/changed-files
 
 # locally required config files
 public/css/*.min.css
@@ -36,7 +22,7 @@ grafana
 .tscache
 .vscode-upload.json
 package-lock.json
-yarn.lock
+yarn*
 
 # winston logger
 error.log

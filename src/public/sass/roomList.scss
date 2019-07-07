@@ -1,0 +1,81 @@
+@import './variable';
+
+.people-list {
+  width: 100%;
+
+  background: #444753;
+  color: white;
+
+  .room-input {
+    padding: 20px;
+    display: flex;
+  }  
+  
+  input {
+    border-radius: 3px;
+    border: none;
+    padding: 14px;
+    width: 100%;
+    font-size: 14px;
+  }
+  
+  .fa-search {
+    position: relative;
+    left: -25px;
+  }
+  
+  ul {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+
+    li {
+      padding: 20px;
+      border: solid 1px rgba(white, 0.3);
+    }
+  }
+
+  .users {
+    display:flex;
+    padding: 20px;
+
+
+    &>.empty {
+      border: solid 1px rgba(white, 0.3);
+      width: 20%;
+    }
+  }
+
+  .user {
+    cursor: pointer;
+
+    &:hover {
+      background-color:rgba(#6A6C75, 0.9)
+    }
+  }
+  
+  .user-icon {
+    float: left;
+    font-size: 40px;
+    border-radius: 50%;
+    border: solid 3px rgba(white, 0.4);
+  }
+  
+  .about {
+    float: left;
+    margin-top: 8px;
+  }
+  
+  .about {
+    padding-left: 8px;
+
+    .name {
+      text-align: left;
+    }
+  }
+  
+  .status {
+    color: $gray;
+  }
+  
+}

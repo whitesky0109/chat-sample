@@ -9,23 +9,23 @@ export default class LoggerService implements IService {
 
   constructor() {
     this.logger = createLogger({
-            // level: 'info',
+      // level: 'info',
       format: format.combine(
-                format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-                format((info) => {
-                  if (info.level === 'error') {
-                    return Object.assign({}, info, {
-                      message: `${info.timestamp} ${info.stack}`,
-                    });
-                  }
-                  return info;
-                })(),
-                format.printf(
-                    ({ timestamp, level, message, meta }) => (meta)
-                    ? `${timestamp} ${level} [${meta.filename}:${meta.line}]: ${message}`
-                    : `${timestamp} ${level} ${message}`,
-                ),
-            ),
+        format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+        format((info) => {
+          if (info.level === 'error') {
+            return Object.assign({}, info, {
+              message: `${info.timestamp} ${info.stack}`,
+            });
+          }
+          return info;
+        })(),
+        format.printf(
+          ({ timestamp, level, message, meta }) => (meta)
+            ? `${timestamp} ${level} [${meta.filename}:${meta.line}]: ${message}`
+            : `${timestamp} ${level} ${message}`,
+        ),
+      ),
       transports: [
         new transports.Console({ level: 'debug', handleExceptions: true }),
         new transports.File({ filename: 'error.log', level: 'error' }),

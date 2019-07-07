@@ -1,0 +1,70 @@
+
+@import '~font-awesome/scss/font-awesome';
+
+@import './variable';
+@import './login';
+@import './chat';
+@import './roomList';
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+}
+
+.image-input {
+  display: none;
+}
+
+li {
+  list-style-type: none;
+}
+
+.container {
+  margin: 0 auto;
+  width: 750px;
+  height: 100vh;
+  background: #444753;
+  border-radius: 10px 10px 10px 10px;
+  position: relative;
+  padding: 0px;
+  -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+  box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+  text-align: center;
+}
+
+.align-left {
+  text-align: left;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.float-right {
+  float: right;
+}
+
+.float-left {
+  float: left;
+}
+
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+
+.online {
+  color: $green;
+}
+  
+.offline {
+  color: $orange;
+}

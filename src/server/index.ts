@@ -7,22 +7,25 @@ import { Container } from 'typedi';
 import http from 'http';
 import express, { Express }  from 'express';
 import socketIo from 'socket.io';
+import { EventEmitter } from 'events';
 const morgan = require('morgan');
 const figlet = require('figlet');
 const cors = require('cors');
 const path = require('path');
 const open = require('open');
 
+import { IService } from '../models/server';
 import './controllers';
 import {
   // System Services
   SettingService, StorageService, LoggerService,
   // Message Processing Services
   SocketManagerService,
+  // Chat Services
+  UserService, RoomService,
 } from './services';
-import { IService } from '../models/server';
-import { EventEmitter } from 'events';
 import StorageMigrationService from './services/system/StorageMigration.service';
+import { WsMessageController } from './controllers/websocket/WsMessageController';
 
 export default class MainServer extends EventEmitter {
   /* app에 대한 타입 설정 */
@@ -56,13 +59,8 @@ export default class MainServer extends EventEmitter {
 
     /* create websocket listener */
     this.io = socketIo(this.server);
-    this.io.use((socket: any, next: Function) => {
-      console.log('Custom middleware');
-      next();
-    });
-    console.log(__dirname);
     useSocketServer(this.io, {
-      controllers: [path.join(__dirname, 'controllers', 'websocket' , '*.js')],
+      controllers: [WsMessageController],
     });
 
     /* create System Logger */
@@ -97,6 +95,8 @@ export default class MainServer extends EventEmitter {
       SettingService,
       StorageService,
       StorageMigrationService,
+      UserService,
+      RoomService,
       SocketManagerService,
     ];
     // register system services

@@ -1,16 +1,18 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { Route, Router } from 'react-router';
-import { createHashHistory } from 'history';
 
 // Components
-import Login from './Login';
+import Login from './pages/Login';
+import { history } from './utils';
+import ChoiceChatRoom from './pages/ChoiceChatRoom';
+import ChatRoom from './pages/ChatRoom';
 
 export default class PageRouter extends PureComponent {
-  history = createHashHistory();
-
   render(): ReactNode {
-    return <Router history={this.history}>
-      <Route path="/" component={Login} />
+    return <Router history={history}>
+      <Route path="/" component={Login} exact={true} />
+      <Route path="/room" component={ChoiceChatRoom} exact={true} />
+      <Route path="/room/:roomId" component={ChatRoom} />
     </Router>;
   }
 }

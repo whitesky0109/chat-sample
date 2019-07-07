@@ -11,6 +11,7 @@ module.exports = Object.assign(baseWebpackConfig, {
 
   entry: {
     app: ['webpack-dev-server/client?http://localhost:3333', './index.tsx',],
+    style: './sass/index.scss',
   },
 
   devtool: 'eval-source-map',
@@ -72,7 +73,27 @@ module.exports = Object.assign(baseWebpackConfig, {
         use: {
           loader: 'html-loader',
         }
-      }
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          'style-loader', // creates style nodes from JS strings
+          'css-loader', // translates CSS into CommonJS
+          {
+            loader: 'postcss-loader',
+            options: {
+              config: { path: __dirname + '/postcss.config.js' },
+            },
+          },
+          {
+            loader: 'sass-loader'
+          }
+        ],
+      },
+      {
+        test: /\.(png|jpg|gif|ttf|eot|svg|woff(2)?)(\?[a-z0-9=&.]+)?$/,
+        loader: 'file-loader',
+      },
     ]
   },
   plugins: [

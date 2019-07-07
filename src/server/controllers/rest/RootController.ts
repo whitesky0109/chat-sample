@@ -10,14 +10,7 @@ export class RootController {
   }
 
   @Get('/')
-    @Render('index.html')
-    helloServer() {
-  }
-
-  @Get('/api')
-    getApi() {
-    return [
-            { hello: 'Hello Node.js Express Server' },
-    ];
+  @Render('index.html')
+  helloServer() {
   }
 }

@@ -18,9 +18,9 @@ export default class StorageService extends EventEmitter implements IService {
   private dbname: string;
 
   constructor(
-        private loggerService: LoggerService,
-        private settingSrv: SettingService,
-    ) {
+    private loggerService: LoggerService,
+    private settingSrv: SettingService,
+  ) {
     super();
     this.loggerService.info('created StorageSrv');
     this.dbname = this.settingSrv.getSystemDbName();
@@ -43,7 +43,7 @@ export default class StorageService extends EventEmitter implements IService {
     (this.loggerService as any)['sql'] = this.sqlLogger.bind(this);
 
     return new Promise((resolve, reject) => {
-            /* if not exist then create database file */
+      /* if not exist then create database file */
       const internals = {
         mod: {
           log: this.loggerService,
