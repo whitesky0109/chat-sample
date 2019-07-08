@@ -13,36 +13,38 @@ export default class UserService implements IService {
     this.logSrv.info('created UserService');
   }
 
-  public addUser(id: string, name: string) {
-    const uid = this.getUserIdByName(name);
-
-    if (!uid) {
-      this.userCache[id] = name;
-      this.logSrv.info(`Logined New User : ${name}`);
-
-      return true;
+  public addUser(id: string, sockId: string) {
+    const alreadyLogined = this.getUserIdBySockId(sockId);
+    if (alreadyLogined) {
+      this.logSrv.info(`already logined user ${alreadyLogined}`);
+      return false;
     }
 
-    this.logSrv.info('already used user id');
+    const sid = this.getSockIdById(id);
+    if (sid) {
+      this.logSrv.info('already used user id');
+      return false;
+    }
 
-    return false;
+    this.userCache[id] = sockId;
+    this.logSrv.info(`Logined New User : ${id}`);
+
+    return true;
   }
 
   public removeUser(id: string) {
-    const name = this.getUsernameById(id);
+    this.userCache[id] = null;
 
-    delete this.userCache[id];
-
-    this.logSrv.info(`Logout User : ${name}`);
+    this.logSrv.info(`Logout User : ${id}`);
   }
 
-  public getUsernameById(id: string) {
+  public getSockIdById(id: string) {
     return this.userCache[id];
   }
 
-  public getUserIdByName(userName: string) {
+  public getUserIdBySockId(sockId: string) {
     for (const id in this.userCache) {
-      if (userName === this.userCache[id]) {
+      if (sockId === this.userCache[id]) {
         return id;
       }
     }

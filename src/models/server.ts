@@ -32,7 +32,7 @@ export interface IInvite {
 }
 
 export interface IMessage {
-  username: string;
+  userId: string;
   type: string;
   message: ArrayBuffer | string;
   date: Date;
@@ -40,13 +40,15 @@ export interface IMessage {
 }
 
 export interface IUser {
-  [userId: string]: string;
+  [userId: string]: string | null;
+}
+
+export interface IRoomInfo {
+  name: string;
+  users: IUser;
+  creator: string;
 }
 
 export interface IRoom {
-  [roomId: string]: {
-    name: string;
-    users: IUser;
-    creator: string;
-  };
+  [roomId: string]: IRoomInfo;
 }

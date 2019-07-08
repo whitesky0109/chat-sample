@@ -1,57 +1,62 @@
-import React, { Component, ReactNode, ChangeEvent, KeyboardEvent } from 'react';
+import { connect } from 'react-redux';
 import { RouteProps } from 'react-router';
+import React, { Component, ReactNode, ChangeEvent, KeyboardEvent } from 'react';
 
-// etc
-import { socket, history } from '../utils';
+// models
+import { StoreState } from '../../models/client';
+
+// components
 import RoomList from '../Components/RoomList';
 
-export interface Props extends RouteProps {
+// redux
+import { setRoomId } from '../redux/actions/roomAction';
 
+// etc
+import { history } from '../utils';
+import { reqAddRoom, reqRooms } from '../controllers/socket';
+
+export interface Props extends RouteProps {
+  room: any;
+  roomId?: string;
+  user?: string;
 }
 
 export interface States {
-  room: any;
   value: string;
 }
 
-export default class ChoiceChatRoom extends Component<Props, States> {
+export class ChoiceChatRoom extends Component<Props, States> {
   state: States = {
-    room: {},
     value: '',
   };
 
   componentWillMount() {
-    socket.on('room', this.updateRooms);
-
-    if (!socket.connected) {
-      socket.on('connect', () => socket.emit('room'));
-    } else {
-      socket.emit('room');
-    }
-  }
-
-  componentWillUnmount() {
-    socket.off('room');
-  }
-
-  updateRooms = (room: any) => {
-    if (room) {
-      this.setState({ room });
-    } else {
+    if (!this.props.user) {
       history.push('/');
+      return;
     }
+
+    setRoomId();
+    reqRooms();
   }
 
   addRoom = () => {
-    const { value: name } = this.state;
-    if (name) {
-      socket.emit('room/new', { name });
+    const { value } = this.state;
+    if (value) {
+      reqAddRoom(value);
     }
     this.setState({ value: '' });
   }
 
   enterRoom = (roomId: string) => {
-    history.push(`/room/${roomId}`);
+    setRoomId(roomId);
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    const { roomId } = nextProps;
+    if (roomId) {
+      history.push(`/room/${roomId}`);
+    }
   }
 
   onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -67,8 +72,10 @@ export default class ChoiceChatRoom extends Component<Props, States> {
       this.addRoom();
     }
   }
+
   render(): ReactNode {
-    const { room, value } = this.state;
+    const { room } = this.props;
+    const { value } = this.state;
 
     return <div className="container">
 
@@ -90,3 +97,17 @@ export default class ChoiceChatRoom extends Component<Props, States> {
     </div>;
   }
 }
+
+const mapDispatchToProps = {
+};
+
+const mapStateToProps = (state: StoreState) => {
+  const { room, user } = state;
+  return {
+    room: room.room,
+    user: user.user,
+    roomId: room.roomId,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChoiceChatRoom);

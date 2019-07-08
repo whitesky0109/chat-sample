@@ -1,7 +1,7 @@
 import { Service } from 'typedi';
 import { LoggerService } from '..';
 import { UserService } from '.';
-import { IService, IRoom, IUser } from '../../../models/server';
+import { IService, IRoom } from '../../../models/server';
 
 @Service()
 export default class RoomService implements IService {
@@ -58,11 +58,11 @@ export default class RoomService implements IService {
 
   public loginUser(roomId: string, userId: string) {
     const room = this.getRoom(roomId);
-    const username = this.userService.getUsernameById(userId);
+    const sockId = this.userService.getSockIdById(userId);
 
     if (userId && room) {
-      room.users[userId] = username;
-      this.loggerService.info(`[${room.name}] Chat room logined ${username}`);
+      room.users[userId] = sockId;
+      this.loggerService.info(`[${room.name}] Chat room logined ${userId}`);
       return true;
     }
 
@@ -79,7 +79,7 @@ export default class RoomService implements IService {
     const room = this.getRoom(roomId);
 
     if (userId && room) {
-      delete room.users[userId];
+      room.users[userId] = null;
       return true;
     }
 

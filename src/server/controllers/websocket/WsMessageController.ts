@@ -18,22 +18,18 @@ export class WsMessageController {
   connection(@ConnectedSocket() socket: SocketIO.Socket) {
     this.sockMgrSrv.addSocket(socket);
     this.loggerSrv.info('new socket client connected');
-
-    const user = this.userSrv.getUsernameById(socket.id);
-    if (user) {
-      socket.emit('room', this.roomSrv.getRooms(socket.id));
-    }
   }
 
   @OnDisconnect()
   disconnect(@ConnectedSocket() socket: SocketIO.Socket) {
     const { id } = socket;
+    const uid = this.userSrv.getUserIdBySockId(id);
 
-    this.roomSrv.logoutRoom(id);
-
-    this.userSrv.removeUser(id);
-    this.sockMgrSrv.emitAll('users', this.userSrv.getUsers());
-
+    if (uid) {
+      this.roomSrv.logoutRoom(uid);
+      this.userSrv.removeUser(uid);
+      this.sockMgrSrv.emitAll('users', this.userSrv.getUsers());
+    }
     this.sockMgrSrv.delSocket(id);
   }
 
@@ -41,22 +37,26 @@ export class WsMessageController {
   addUser(@ConnectedSocket() socket: SocketIO.Socket, @MessageBody() message: any) {
     const { name } = message;
 
-    const isAdded = this.userSrv.addUser(socket.id, name);
+    const isAdded = this.userSrv.addUser(name, socket.id);
     if (isAdded) {
       this.sockMgrSrv.emitAll('users', this.userSrv.getUsers());
     }
 
     socket.emit('login', isAdded ? name : null);
 
-    socket.emit('room', this.roomSrv.getRooms(socket.id));
+    socket.emit('room', this.roomSrv.getRooms(name));
   }
 
   @OnMessage('room')
-  getRoom(@ConnectedSocket() socket: SocketIO.Socket) {
-    const username = this.userSrv.getUsernameById(socket.id);
+  getRoom(@ConnectedSocket() socket: SocketIO.Socket, @MessageBody() req: any) {
+    const uid = this.userSrv.getUserIdBySockId(socket.id);
 
-    if (username) {
-      socket.emit('room', this.roomSrv.getRooms(socket.id));
+    if (uid) {
+      const result = req
+        ? this.roomSrv.getRoom(req.id)
+        : this.roomSrv.getRooms(uid);
+
+      socket.emit('room', result);
     } else {
       socket.emit('room', null);
     }
@@ -65,11 +65,13 @@ export class WsMessageController {
   @OnMessage('room/new')
   addRoom(@ConnectedSocket() socket: SocketIO.Socket, @MessageBody() message: any) {
     const rid = uid();
-    const username = this.userSrv.getUsernameById(socket.id);
-    this.roomSrv.addRoom(rid, message.name, username);
-    this.roomSrv.loginUser(rid, socket.id);
+    let userId = this.userSrv.getUserIdBySockId(socket.id);
+    userId = userId ? userId : 'Unknowen';
 
-    socket.emit('room', this.roomSrv.getRooms(socket.id));
+    this.roomSrv.addRoom(rid, message.name, userId);
+    this.roomSrv.loginUser(rid, userId);
+
+    socket.emit('room', this.roomSrv.getRooms(userId));
   }
 
   @OnMessage('room/message')
@@ -78,21 +80,24 @@ export class WsMessageController {
   ) {
     const { roomId, type, message } = data;
     const room = this.roomSrv.getRoom(roomId);
-    const username = this.userSrv.getUsernameById(socket.id);
+    const uid = this.userSrv.getUserIdBySockId(socket.id);
 
     if (room) {
       for (const userId in room.users) {
-        const msg: IMessage = {
-          username,
-          type,
-          message,
-          isMy: (userId === socket.id) ? true : false,
-          date: new Date(),
-        };
+        const sockId = room.users[userId];
+        if (sockId) {
+          const msg: IMessage = {
+            type,
+            message,
+            userId: uid ? uid : 'unknown',
+            isMy: (sockId === socket.id) ? true : false,
+            date: new Date(),
+          };
 
-        this.sockMgrSrv
-          .getSocket(userId)
-          .emit('room/message', msg);
+          this.sockMgrSrv
+            .getSocket(sockId)
+            .emit('room/message', msg);
+        }
       }
     }
   }
@@ -100,21 +105,26 @@ export class WsMessageController {
   @OnMessage('room/invite')
   inviteUser(@MessageBody() invite: IInvite,
   ) {
+    const allUser = this.userSrv.getUsers();
     const { roomId, users } = invite;
     this.roomSrv.loginUsers(roomId, users);
 
     for (const userId of users) {
-      this.sockMgrSrv
-        .getSocket(userId)
-        .emit('room', this.roomSrv.getRooms(userId));
+      const sockId = allUser[userId];
+
+      if (sockId) {
+        this.sockMgrSrv
+          .getSocket(sockId)
+          .emit('room', this.roomSrv.getRooms(userId));
+      }
     }
   }
 
   @OnMessage('users')
   getUsers(@ConnectedSocket() socket: SocketIO.Socket) {
-    const username = this.userSrv.getUsernameById(socket.id);
+    const uid = this.userSrv.getUserIdBySockId(socket.id);
 
-    const message = username ? this.userSrv.getUsers() : null;
+    const message = uid ? this.userSrv.getUsers() : null;
 
     socket.emit('users', message);
   }

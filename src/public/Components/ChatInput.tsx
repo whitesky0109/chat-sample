@@ -4,7 +4,6 @@ import React, { Component, ChangeEvent, KeyboardEvent } from 'react';
 import { IMessage } from '../../models/client';
 
 export interface Props {
-  roomId: string;
   onSendMessage: (msg: IMessage) => void;
 }
 
@@ -18,11 +17,10 @@ export default class ChatInput extends Component<Props, States> {
   };
 
   sendMessage(type: string, message: string | File) {
-    const { onSendMessage, roomId } = this.props;
+    const { onSendMessage } = this.props;
 
     if (onSendMessage) {
       onSendMessage({
-        roomId,
         type,
         message,
       });

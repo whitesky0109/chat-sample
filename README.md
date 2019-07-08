@@ -22,13 +22,13 @@ npm run start # or yarn start
 ## How to development node.js app
 
 ```bash
-npm run server:watch # or yarn server:watch
+npm run watch:server # or yarn watch:server
 ```
 
 ## How to development fornt-end app
 
 ```bash
-npm run front:watch # or yarn front:watch
+npm run watch:client # or yarn watch:client
 ```
 
 ## chat style idea

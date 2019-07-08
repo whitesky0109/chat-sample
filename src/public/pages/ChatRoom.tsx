@@ -1,71 +1,94 @@
+import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { RouteProps } from 'react-router';
 
 // models
-import { IMessage } from '../../models/client';
-import { IMessage as IServerMessage } from '../../models/server';
+import { IMessage, StoreState } from '../../models/client';
+import { IMessage as IServerMessage, IRoom } from '../../models/server';
 
 // components
-import InviteUser from '../Components/Invite';
 import ChatHistory from '../Components/ChatHistory';
-
-// etc
-import { socket } from '../utils';
 import ChatInput from '../Components/ChatInput';
 
+// etc
+import { history } from '../utils';
+import socket, { reqRooms, reqSendMessage } from '../controllers/socket';
+
 export interface Props extends RouteProps {
-  match: any;
+  room?: IRoom;
+  roomId?: string;
+  user?: string;
+  messages?: IServerMessage[];
 }
 
-export interface States {
-  messages: IServerMessage[];
-  isInvite: boolean;
-}
-
-export default class ChatRoom extends Component<Props, States> {
-  roomId: string;
-  state: States = {
-    messages: [],
-    isInvite: false,
-  };
+export class ChatRoom extends Component<Props> {
 
   componentWillMount() {
-    const { match } = this.props;
-    this.roomId = match ? match.params.roomId : null;
-    socket.on('room/message', this.onMessage);
+    const { user, roomId } = this.props;
+
+    reqRooms(roomId);
+    if (!user) {
+      history.push('/');
+    } else if (!roomId) {
+      history.push('/room');
+    }
   }
 
-  componentWillUnmount() {
-    socket.off('room/message');
-  }
+  componentWillReceiveProps(nextProps: Props) {
+    const { user, roomId } = nextProps;
 
-  onMessage = (msg: IServerMessage) => {
-    const { messages } = this.state;
-    this.setState({
-      messages: [...messages, msg],
-    });
+    if (!user) {
+      history.push('/');
+    } else if (!roomId) {
+      history.push('/room');
+    }
   }
 
   onSendMessage = (msg: IMessage) => {
-    socket.emit('room/message', msg);
+    const { roomId } = this.props;
+    reqSendMessage({ ...msg, roomId });
   }
 
   onInvite = () => {
-    const { isInvite } = this.state;
-
-    this.setState({ isInvite: !isInvite });
+    const { roomId } = this.props;
+    history.push(`/room/${roomId}/invite`);
   }
 
   render() {
-    const { messages, isInvite } = this.state;
+    const { room, roomId, messages } = this.props;
+    const ids: string[] = [];
+
+    if (!roomId) {
+      return;
+    }
+
+    if (room && room.users) {
+      for (const userId in room.users) {
+        ids.push(userId);
+      }
+    }
+    ids.push(socket.id);
 
     return <>
-      {isInvite ? <InviteUser roomId={this.roomId} /> : null}
       <button onClick={this.onInvite} >inVite</button>
 
-      <ChatHistory messages={messages} />
-      <ChatInput roomId={this.roomId} onSendMessage={this.onSendMessage} />
-
+      <ChatHistory messages={messages ? messages : []} />
+      <ChatInput onSendMessage={this.onSendMessage} />
     </>;
   }
 }
+
+const mapDispatchToProps = {
+};
+
+const mapStateToProps = (state: StoreState) => {
+  const { room, user } = state;
+  return {
+    room: room.room,
+    user: user.user,
+    roomId: room.roomId,
+    messages: room.messages,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatRoom);

@@ -29,11 +29,11 @@ export default class ChatHistory extends Component<Props> {
   }
 
   renderMessage(key: number, message: IMessage): ReactNode {
-    const { date, username, isMy } = message;
+    const { date, userId, isMy } = message;
     const dateStr = moment(date).format('YYYY년 MM월 DD일 (ddd) hh:mm:ss');
     const dataDom = message.isMy
-      ? this.renderMyData(username, dateStr)
-      : this.renderOterData(username, dateStr);
+      ? this.renderMyData(userId, dateStr)
+      : this.renderOterData(userId, dateStr);
     const msgCls = classnames({
       'float-right': isMy,
       'float-left': !isMy,
