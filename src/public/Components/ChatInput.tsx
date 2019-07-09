@@ -64,31 +64,33 @@ export default class ChatInput extends Component<Props, States> {
   }
 
   renderFileInput() {
-    return <>
-    <div className="file-input" >
-      <label htmlFor="image" >
-          <span className="fa fa-upload" aria-hidden="true" />
-      </label>
-      <input type="file" accept="image/*" id="image" className="image-input" onChange={this.fileChange} />
-    </div>
-    </>;
+    return (
+      <div className="file-input" >
+        <label htmlFor="image" >
+            <span className="fa fa-upload" aria-hidden="true" />
+        </label>
+        <input type="file" accept="image/*" id="image" className="image-input" onChange={this.fileChange} />
+      </div>
+    );
   }
 
   render() {
     const { value } = this.state;
 
-    return <div className="chat-input clearfix">
-      {this.renderFileInput()}
+    return (
+      <div className="chat-input clearfix">
+        {this.renderFileInput()}
 
-      <input
-        type="text"
-        value={value}
-        onChange={this.inputChange}
-        onKeyDown={this.inputKeyPress}
-        placeholder="Type your message"
-      />
+        <input
+          type="text"
+          value={value}
+          onChange={this.inputChange}
+          onKeyDown={this.inputKeyPress}
+          placeholder="Type your message"
+        />
 
-      <button onClick={this.onSend}>Send</button>
-    </div>;
+        <button onClick={this.onSend}>Send</button>
+      </div>
+    );
   }
 }

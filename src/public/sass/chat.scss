@@ -1,9 +1,60 @@
+@import './variable.scss';
+
+.header {
+  padding: 20px;
+  border-bottom: 2px solid white;
+  background: white;
+  display: flex;
+  justify-content: space-between;
+
+  .user-icon {
+    display: flex;
+    align-items: center;
+    font-size: 30px;
+    border-radius: 50%;
+    border: solid 5px $green;
+    color: $green;
+  }
+
+  .title {
+    display: flex;
+  }
+  
+  .about {
+    float: left;
+    padding-left: 10px;
+    margin-top: 6px;
+  }
+
+  .btn-group {
+    display: flex;
+    align-items: center;
+
+    .btn {
+      border: 0;
+      background-color: transparent;
+      cursor: pointer;
+      font-size: 20px;
+    }
+  }
+  
+  .chat-with {
+    font-weight: bold;
+    font-size: 16px;
+    text-align: left;
+  }
+  
+  .chat-num-messages {
+    color: $gray;
+  }
+}
+
 .chat-history {
   background: #F2F5F8;
   padding: 30px 30px 20px;
   border-bottom: 2px solid white;
   overflow-y: scroll;
-  height: calc(100vh - 121px);
+  height: calc(100vh - 188px);
 
   ul {
     margin: 0;

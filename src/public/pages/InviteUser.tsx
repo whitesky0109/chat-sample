@@ -8,7 +8,7 @@ import { StoreState } from 'models/client';
 import { IUser, IInvite, IRoom } from 'models/server';
 
 // etc
-import { reqUsers, reqInvite } from '../controllers/socket';
+import { reqUsers, reqInvite, reqRooms } from '../controllers/socket';
 
 export interface Props extends RouteComponentProps {
   room?: IRoom;
@@ -19,26 +19,39 @@ export interface Props extends RouteComponentProps {
 
 export class InviteUser extends Component<Props> {
 
-  componentWillMount() {
-    const { roomId, history } = this.props;
+  propChecker(props: Props) {
+    const { history } = this.props;
+    const { roomId, user, room, users } = props;
 
-    if (!roomId) {
-      history.push('/room');
-      return;
+    if (!room) {
+      reqRooms();
+      return false;
     }
 
-    reqUsers();
-  }
+    if (!users) {
+      reqUsers();
+      return false;
+    }
 
-  shouldComponentUpdate(nextProps: Props) {
-    const { history } = this.props;
+    if (!user) {
+      history.goBack();
+      return false;
+    }
 
-    if (!nextProps.roomId) {
+    if (!roomId) {
       history.push('/room');
       return false;
     }
 
     return true;
+  }
+
+  componentWillMount() {
+    this.propChecker(this.props);
+  }
+
+  shouldComponentUpdate(nextProps: Props) {
+    return this.propChecker(nextProps);
   }
 
   onInviteUser = (id: string) => {
@@ -53,7 +66,12 @@ export class InviteUser extends Component<Props> {
     };
 
     reqInvite(msg);
-    history.push(`/room/${roomId}`);
+    history.goBack();
+  }
+
+  cancel = () => {
+    const { history } = this.props;
+    history.goBack();
   }
 
   renderList(): ReactNode[] {
@@ -75,6 +93,7 @@ export class InviteUser extends Component<Props> {
       if (userIds.includes(id)) {
         return;
       }
+      const online = user ? 'online' : 'offline';
 
       return (<li className="user clearfix" key={id} onClick={this.onInviteUser.bind(this, id)}>
         <div className="user-icon">
@@ -83,8 +102,8 @@ export class InviteUser extends Component<Props> {
         <div className="about">
           <div className="name">{id}</div>
           <div className="status">
-            <i className="fa fa-user" />
-            <span> Online</span>
+            <i className={`fa fa-circle ${online}`} />
+            <span> {online}</span>
           </div>
         </div>
       </li>);
@@ -94,7 +113,12 @@ export class InviteUser extends Component<Props> {
   }
 
   render() {
+    const { room, roomId } = this.props;
     const list = this.renderList();
+
+    if (!room || !roomId) {
+      return;
+    }
 
     const view = list.length
       ? <ul className="list">
@@ -102,13 +126,33 @@ export class InviteUser extends Component<Props> {
       </ul>
       : <>does not exist User</>;
 
-    return <div className="container">
-      <div className="people-list" id="people-list">
-        <div className="users">
-          {view}
+    return (
+      <div className="container">
+        <div className="header">
+          <div className="title">
+            <div className="user-icon">
+              <i className="fa fa fa-user" />
+            </div>
+            <div className="about">
+              <div className="chat-with">Invite User</div>
+              <div className="chat-num-messages">Room Name : {room[roomId].name}</div>
+            </div>
+          </div>
+
+          <div className="btn-group">
+            <button className="btn" onClick={this.cancel} title="취소">
+              <i className="fa fa-share-square-o" />
+            </button>
+          </div>
+        </div>
+
+        <div className="people-list" id="people-list">
+          <div className="users">
+            {view}
+          </div>
         </div>
       </div>
-    </div>;
+    );
   }
 }
 

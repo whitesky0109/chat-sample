@@ -12,7 +12,7 @@ import RoomList from '../components/RoomList';
 import { setRoomId, clearMessage } from '../store/actions/roomAction';
 
 // etc
-import { reqAddRoom, reqRooms, reqEnterRoom } from '../controllers/socket';
+import { reqAddRoom, reqRooms, reqEnterRoom, reqUserLogout } from '../controllers/socket';
 
 export interface Props extends RouteComponentProps {
   room: any;
@@ -41,6 +41,26 @@ export class ChoiceChatRoom extends Component<Props, States> {
     reqRooms();
   }
 
+  shouldComponentUpdate(nextProps: Props) {
+    const { history, roomId } = this.props;
+    const { roomId: nextRoomId, user } = nextProps;
+
+    if (!user) {
+      history.push('/');
+      return false;
+    }
+
+    if (nextRoomId) {
+      if (roomId) {
+        clearMessage();
+      }
+      history.push(`/room/${nextRoomId}`);
+      return false;
+    }
+
+    return true;
+  }
+
   addRoom = () => {
     const { value } = this.state;
     if (value) {
@@ -51,20 +71,6 @@ export class ChoiceChatRoom extends Component<Props, States> {
 
   enterRoom = (roomId: string) => {
     reqEnterRoom(roomId);
-  }
-
-  shouldComponentUpdate(nextProps: Props) {
-    const { history, roomId } = this.props;
-    const { roomId: nextRoomId } = nextProps;
-    if (nextRoomId) {
-      if (roomId) {
-        clearMessage();
-      }
-      history.push(`/room/${nextRoomId}`);
-      return false;
-    }
-
-    return true;
   }
 
   onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -81,28 +87,56 @@ export class ChoiceChatRoom extends Component<Props, States> {
     }
   }
 
+  logout = () => {
+    reqUserLogout();
+  }
+
   render(): ReactNode {
-    const { room } = this.props;
+    const { room, user } = this.props;
     const { value } = this.state;
 
-    return <div className="container">
+    if (!room || !user) {
+      return (
+        <> </>
+      );
+    }
 
-      <div className="people-list" id="people-list">
+    return (
+      <div className="container">
+        <div className="header">
+          <div className="title">
+            <div className="user-icon">
+              <i className="fa fa fa-weixin" />
+            </div>
+            <div className="about">
+              <div className="chat-with">{user}</div>
+            </div>
+          </div>
 
-        <div className="room-input">
-          <input
-            className="text"
-            placeholder="Type Chat room name"
-            value={value}
-            onChange={this.onInputChange}
-            onKeyDown={this.onInputKeyPress}
-          />
-          <button onClick={this.addRoom}><i className="fa fa-plus" /></button>
+          <div className="btn-group">
+            <button className="btn" onClick={this.logout} title="로그 아웃">
+              <i className="fa fa-share-square-o" />
+            </button>
+          </div>
         </div>
 
-        <RoomList rooms={room} onRoomClick={this.enterRoom} />
+        <div className="people-list" id="people-list">
+
+          <div className="room-input">
+            <input
+              className="text"
+              placeholder="Type Chat room name"
+              value={value}
+              onChange={this.onInputChange}
+              onKeyDown={this.onInputKeyPress}
+            />
+            <button onClick={this.addRoom} title="방 만들기"><i className="fa fa-plus" /></button>
+          </div>
+
+          <RoomList rooms={room} onRoomClick={this.enterRoom} />
+        </div>
       </div>
-    </div>;
+    );
   }
 }
 

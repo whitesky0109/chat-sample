@@ -47,6 +47,19 @@ export class WsMessageController {
     socket.emit('room', this.roomSrv.getRooms(name));
   }
 
+  @OnMessage('logout')
+  removeUser(@ConnectedSocket() socket: SocketIO.Socket) {
+    const { id } = socket;
+    const uid = this.userSrv.getUserIdBySockId(id);
+
+    if (uid) {
+      this.roomSrv.logoutRoom(uid);
+      this.userSrv.removeUser(uid);
+      this.sockMgrSrv.emitAll('users', this.userSrv.getUsers());
+      socket.emit('logout');
+    }
+  }
+
   @OnMessage('room')
   getRoom(@ConnectedSocket() socket: SocketIO.Socket, @MessageBody() req: any) {
     const uid = this.userSrv.getUserIdBySockId(socket.id);
@@ -73,6 +86,21 @@ export class WsMessageController {
     socket.emit('room', this.roomSrv.getRooms(userId));
   }
 
+  updateRoom(roomId: string) {
+    const room = this.roomSrv.getRoom(roomId);
+
+    if (room) {
+      for (const uid in room.users) {
+        const sockId = room.users[uid];
+        if (sockId) {
+          this.sockMgrSrv
+            .getSocket(sockId)
+            .emit('room', this.roomSrv.getRooms());
+        }
+      }
+    }
+  }
+
   @OnMessage('room/in')
   enterRoom(@ConnectedSocket() socket: SocketIO.Socket, @MessageBody() message: any) {
     const userId = this.userSrv.getUserIdBySockId(socket.id);
@@ -83,6 +111,7 @@ export class WsMessageController {
 
     const roomId = message.id;
     this.roomSrv.loginUser(roomId, userId);
+    this.updateRoom(roomId);
 
     socket.emit('room/in', roomId);
   }
@@ -97,6 +126,7 @@ export class WsMessageController {
 
     const roomId = message.id;
     this.roomSrv.logoutUser(roomId, userId);
+    this.updateRoom(roomId);
 
     socket.emit('room/out', roomId);
   }
@@ -134,12 +164,13 @@ export class WsMessageController {
   ) {
     const allUser = this.userSrv.getUsers();
     const { roomId, users: inviteUsers } = invite;
-    const room = this.roomSrv.getRoom(roomId);
 
+    this.roomSrv.addUsers(roomId, inviteUsers);
+
+    const room = this.roomSrv.getRoom(roomId);
     if (!room) {
       return;
     }
-    this.roomSrv.loginUsers(roomId, inviteUsers);
 
     for (const userId in room.users) {
       const sockId = allUser[userId];

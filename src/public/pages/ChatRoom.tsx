@@ -22,32 +22,29 @@ export interface Props extends RouteComponentProps {
 
 export class ChatRoom extends Component<Props> {
 
-  componentWillMount() {
-    const { user, roomId } = this.props;
-
-    reqRooms(roomId);
-    if (!user) {
-      this.props.history.push('/');
-    } else if (!roomId) {
-      this.props.history.push('/room');
-    }
-  }
-
-  shouldComponentUpdate(nextProps: Props) {
-    const { user, roomId } = nextProps;
+  propChecker(props: Props) {
     const { history } = this.props;
+    const { user, roomId, room } = props;
 
-    if (!user) {
-      history.push('/');
+    if (!room) {
+      reqRooms();
       return false;
     }
 
-    if (!roomId) {
-      history.push('/room');
+    if (!roomId || !user) {
+      history.goBack();
       return false;
     }
 
     return true;
+  }
+
+  componentWillMount() {
+    this.propChecker(this.props);
+  }
+
+  shouldComponentUpdate(nextProps: Props) {
+    return this.propChecker(nextProps);
   }
 
   onSendMessage = (msg: IMessage) => {
@@ -69,27 +66,56 @@ export class ChatRoom extends Component<Props> {
   }
 
   render() {
-    const { room, roomId, messages } = this.props;
+    const { room, roomId, messages, user } = this.props;
     const ids: string[] = [];
 
-    if (!roomId) {
-      return;
+    if (!roomId || !room) {
+      return (
+        <> </>
+      );
     }
 
-    if (room && room.users) {
-      for (const userId in room.users) {
+    let count = 0;
+    if (room && roomId) {
+      const roomUser = room[roomId].users;
+      for (const userId in roomUser) {
+        if (roomUser[userId]) {
+          count += 1;
+        }
         ids.push(userId);
       }
     }
-    ids.push(socket.id);
 
-    return <>
-      <button onClick={this.onInvite} >inVite</button>
-      <button onClick={this.leaveRoom} >leave</button>
+    return (
+      <>
+      <div className="header">
+        <div className="title">
+          <div className="user-icon">
+            <i className="fa fa-users" />
+          </div>
+          <div className="about">
+            <div className="chat-with">{room[roomId].name}</div>
+            <div className="chat-num-messages">created by {user}</div>
+          </div>
+        </div>
+        <div className="btn-group">
+          <div>
+            <div>사용자 수 : {ids.length}</div>
+            <div>접속자 수 : {count}</div>
+          </div>
+          <button className="btn" onClick={this.onInvite} title="사용자 초대">
+            <i className="fa fa-user" />
+          </button>
+          <button className="btn" onClick={this.leaveRoom} title="방 나가기">
+            <i className="fa fa-sign-out" />
+          </button>
+        </div>
+      </div>
 
       <ChatHistory messages={messages ? messages : []} />
       <ChatInput onSendMessage={this.onSendMessage} />
-    </>;
+      </>
+    );
   }
 }
 

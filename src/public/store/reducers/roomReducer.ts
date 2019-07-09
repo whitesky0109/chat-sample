@@ -8,15 +8,17 @@ export const initialState: RoomPayload = {
 
 // reducer
 export const roomReducer = (state = initialState, action: RoomAction): RoomPayload => {
+  const { payload } = action;
+
   switch (action.type) {
     case ROOM_ACTION_TYPES.SET_ROOMS:
-      return { ...state, room: { ...action.payload.room } };
+      return { ...state, room: { ...payload.room } };
     case ROOM_ACTION_TYPES.SET_ROOM:
-      return { ...state, roomId: action.payload.roomId };
+      return { ...state, roomId: payload.roomId };
     case ROOM_ACTION_TYPES.ADD_MESSAGE:
       const { messages } = state;
       const msgs = messages ? messages : [];
-      const { message } = action.payload;
+      const { message } = payload;
 
       if (message) {
         return { ...state, messages: [...msgs, message] };

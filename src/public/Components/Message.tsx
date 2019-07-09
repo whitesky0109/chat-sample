@@ -12,9 +12,11 @@ export default class Message extends Component<Props> {
   renderText(): ReactNode {
     const { message } = this.props;
 
-    return <>
-      {message}
-    </>;
+    return (
+      <>
+        {message}
+      </>
+    );
   }
 
   getImageSrc(type: string, message: ArrayBuffer) {
@@ -28,7 +30,9 @@ export default class Message extends Component<Props> {
     const { message, type } = this.props;
     const imageSrc = this.getImageSrc(type, message as ArrayBuffer);
 
-    return <img src={imageSrc} alt="" />;
+    return (
+      <img src={imageSrc} alt="" />
+    );
   }
 
   render() {
@@ -37,8 +41,10 @@ export default class Message extends Component<Props> {
       ? this.renderText()
       : this.renderImage();
 
-    return <div>
-      {msg}
-    </div>;
+    return (
+      <div>
+        {msg}
+      </div>
+    );
   }
 }

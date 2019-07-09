@@ -35,3 +35,7 @@ export const onRecvUsers = (users?: IUser) => {
   };
   store.dispatch(msg);
 };
+
+export const onRecvLogout = () => {
+  onRecvLogin();
+};

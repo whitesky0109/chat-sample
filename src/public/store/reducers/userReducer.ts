@@ -6,11 +6,13 @@ export const initialState: UserPayload = {
 
 // reducer
 export const userReducer = (state = initialState, action: UserAction): UserPayload => {
-  switch (action.type) {
+  const { type, payload } = action;
+
+  switch (type) {
     case 'SET_USERS':
-      return { ...state, users: action.payload.users };
+      return { ...state, users: payload.users };
     case 'SET_USER': {
-      return { ...state, user: action.payload.user };
+      return { ...state, user: payload.user };
     }
   }
 

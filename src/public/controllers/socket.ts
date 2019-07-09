@@ -5,28 +5,27 @@ import { IMessage } from 'models/client';
 import { IInvite, IUser, IRoom, IMessage as IServerMessage } from 'models/server';
 
 // redux
-import { onRecvLogin, onRecvUsers } from 'public/store/actions/userAction';
+import { onRecvLogin, onRecvUsers, onRecvLogout } from 'public/store/actions/userAction';
 import { addMessage, onRecvRoom, setRoomId } from 'public/store/actions/roomAction';
+import { clearAll } from 'public/store';
 
 export const socket: SocketIOClient.Socket = io('/chat');
 
 socket.on('connect', () => {
-  onRecvLogin();
-  setRoomId();
-  onRecvRoom();
-  onRecvUsers();
+  clearAll();
   console.log('socket.io connected');
 });
 
 socket.on('disconnect', () => {
-  onRecvLogin();
-  setRoomId();
-  onRecvRoom();
-  onRecvUsers();
+  clearAll();
 });
 
 socket.on('login', (user: string) => {
   onRecvLogin(user);
+});
+
+socket.on('logout', () => {
+  onRecvLogout();
 });
 
 socket.on('room', (room: IRoom) => {
@@ -57,12 +56,16 @@ export const reqUserLogin = (name: string) => {
   return true;
 };
 
+export const reqUserLogout = () => {
+  socket.emit('logout');
+};
+
 export const reqRooms = (roomId?: string) => {
   if (!socket.connected) {
     return false;
   }
 
-  socket.emit('emit', roomId ? { id: roomId } : undefined);
+  socket.emit('room', roomId ? { id: roomId } : undefined);
   return true;
 };
 

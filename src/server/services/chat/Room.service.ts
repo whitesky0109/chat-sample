@@ -87,6 +87,22 @@ export default class RoomService implements IService {
     }
   }
 
+  public addUser(roomId: string, userId: string) {
+    const room = this.getRoom(roomId);
+    if (room) {
+      room.users[userId] = null;
+      this.loggerService.info(`[${room.name}] Chat room invited: ${userId}`);
+      return true;
+    }
+    return false;
+  }
+
+  public addUsers(roomId: string, users: string[]) {
+    for (const userId of users) {
+      this.addUser(roomId, userId);
+    }
+  }
+
   public logoutUser(roomId: string, userId: string) {
     const room = this.getRoom(roomId);
 

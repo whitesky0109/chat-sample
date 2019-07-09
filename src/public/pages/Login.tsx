@@ -7,6 +7,7 @@ import { StoreState } from 'models/client';
 
 // etc
 import { reqUserLogin } from '../controllers/socket';
+import { clearAll } from 'public/store';
 
 // image
 const logo = require('../static/user.png');
@@ -45,46 +46,50 @@ export class Login extends Component<Props, States> {
     }
   }
 
-  componentWillMount() {
-    const { user, history } = this.props;
+  propsChecker(props: Props) {
+    const { history } = this.props;
+    const { user } = props;
 
     if (user) {
-      history.push('/room');
-    }
-  }
-
-  shouldComponentUpdate(nextProps: Props) {
-    const { history } = this.props;
-
-    if (nextProps.user) {
       history.push('/room');
       return false;
     }
 
+    clearAll();
     return true;
+  }
+
+  componentWillMount() {
+    this.propsChecker(this.props);
+  }
+
+  shouldComponentUpdate(nextProps: Props) {
+    return this.propsChecker(nextProps);
   }
 
   render(): ReactNode {
     const { value } = this.state;
 
-    return <div className="container login">
-      <div>
-        <div className="first">
-          <img src={logo} id="icon" alt="User Icon" />
-        </div>
+    return (
+      <div className="container login">
+        <div>
+          <div className="first">
+            <img src={logo} id="icon" alt="User Icon" />
+          </div>
 
-        <div className="login-form">
-          <input
-            type="text"
-            placeholder="Type new your ID"
-            value={value}
-            onChange={this.inputChange}
-            onKeyDown={this.inputKeyPress}
-          />
-          <button onClick={this.onLogin} >Connect</button>
+          <div className="login-form">
+            <input
+              type="text"
+              placeholder="Type new your ID"
+              value={value}
+              onChange={this.inputChange}
+              onKeyDown={this.inputKeyPress}
+            />
+            <button onClick={this.onLogin} >Connect</button>
+          </div>
         </div>
       </div>
-    </div>;
+    );
   }
 }
 
