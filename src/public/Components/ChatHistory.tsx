@@ -3,7 +3,7 @@ import React, { Component, ReactNode } from 'react';
 const classnames = require('classnames');
 
 // models
-import { IMessage } from '../../models/server';
+import { IMessage } from 'models/server';
 
 // Components
 import Message from './Message';
@@ -13,6 +13,7 @@ export interface Props {
 }
 
 export default class ChatHistory extends Component<Props> {
+  messagesEnd?: HTMLDivElement;
 
   renderMyData(username: string, date: string): ReactNode {
     return <div className="msg-data align-right">
@@ -47,16 +48,29 @@ export default class ChatHistory extends Component<Props> {
       </div>
     </li >;
   }
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
+
+  scrollToBottom = () => {
+    if (this.messagesEnd) {
+      this.messagesEnd.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
 
   render() {
     const { messages } = this.props;
     const messageRender = messages.map((message, index) => {
       return this.renderMessage(index, message);
     });
+
+    const setMessageDiv = (el: HTMLDivElement) => { this.messagesEnd = el; };
+
     return <div className="chat-history">
       <ul>
         {messageRender}
       </ul>
+      <div ref={setMessageDiv} />
     </div>;
   }
 }

@@ -44,3 +44,7 @@ https://codepen.io/vhtkr/pen/eaLBNK
 ### [routing-controllers](https://github.com/typestack/routing-controllers)
 
 ### [Typescript + ExpressJs 시작하기](https://mayajuni.github.io/2016/06/30/typescript-express/)
+
+## known problem
+
+1. does not work client in open multiple same browser

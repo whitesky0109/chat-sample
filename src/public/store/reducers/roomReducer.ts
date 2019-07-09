@@ -1,4 +1,4 @@
-import { RoomPayload, RoomAction, ROOM_ACTION_TYPES } from '../actions/roomAction';
+import { RoomPayload, RoomAction, ROOM_ACTION_TYPES } from 'public/store/actions/roomAction';
 
 // init
 export const initialState: RoomPayload = {
@@ -10,7 +10,7 @@ export const initialState: RoomPayload = {
 export const roomReducer = (state = initialState, action: RoomAction): RoomPayload => {
   switch (action.type) {
     case ROOM_ACTION_TYPES.SET_ROOMS:
-      return { ...state, room: action.payload.room };
+      return { ...state, room: { ...action.payload.room } };
     case ROOM_ACTION_TYPES.SET_ROOM:
       return { ...state, roomId: action.payload.roomId };
     case ROOM_ACTION_TYPES.ADD_MESSAGE:
@@ -21,6 +21,8 @@ export const roomReducer = (state = initialState, action: RoomAction): RoomPaylo
       if (message) {
         return { ...state, messages: [...msgs, message] };
       }
+    case ROOM_ACTION_TYPES.CLEAR_MESSAGE:
+      return { ...state, messages: [] };
   }
 
   return state;

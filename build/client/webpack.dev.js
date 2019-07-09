@@ -3,15 +3,16 @@ const baseWebpackConfig = require('./webpack.base');
 
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 
 module.exports = Object.assign(baseWebpackConfig, {
   mode: 'development',
 
   entry: {
-    app: ['webpack-dev-server/client?http://localhost:3333', './index.tsx',],
-    style: './sass/index.scss',
+    app: ['webpack-dev-server/client?http://localhost:4444', './public/index.tsx',],
+    style: './public/sass/index.scss',
   },
 
   devtool: 'eval-source-map',
@@ -23,7 +24,7 @@ module.exports = Object.assign(baseWebpackConfig, {
   },
 
   output: {
-    path: path.resolve(__dirname, '../../dist/public'),
+    path: path.resolve(__dirname, '..' ,'..', 'dist/public'),
     filename: '[name].[hash].js',
     publicPath: '/',
     pathinfo: false,
@@ -32,7 +33,7 @@ module.exports = Object.assign(baseWebpackConfig, {
   devServer: {
     publicPath: '/',
     hot: true,
-    port: 3333,
+    port: 4444,
     proxy: {
       '!/dist/': 'http://localhost:4000',
     },
@@ -92,13 +93,18 @@ module.exports = Object.assign(baseWebpackConfig, {
       },
       {
         test: /\.(png|jpg|gif|ttf|eot|svg|woff(2)?)(\?[a-z0-9=&.]+)?$/,
-        loader: 'file-loader',
+        use: [{
+          loader: 'file-loader',
+        }]
       },
     ]
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new HtmlWebpackPlugin({
+    new CopyWebpackPlugin([
+      { from: './public/fonts/*'},
+  ]),
+  new HtmlWebpackPlugin({
       filename: path.resolve(__dirname, '../../dist/public/index.html'),
       template: path.resolve(__dirname, '../../src/public/index.html'),
       inject: 'body',

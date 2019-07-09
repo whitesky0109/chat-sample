@@ -3,7 +3,11 @@
   padding: 30px 30px 20px;
   border-bottom: 2px solid white;
   overflow-y: scroll;
-  height: 548px;
+  height: calc(100vh - 121px);
+
+  ul {
+    margin: 0;
+  }
 
   .msg-data {
     margin-bottom: 15px;

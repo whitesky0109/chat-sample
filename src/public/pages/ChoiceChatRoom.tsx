@@ -1,21 +1,20 @@
 import { connect } from 'react-redux';
-import { RouteProps } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 import React, { Component, ReactNode, ChangeEvent, KeyboardEvent } from 'react';
 
 // models
-import { StoreState } from '../../models/client';
+import { StoreState } from 'models/client';
 
 // components
-import RoomList from '../Components/RoomList';
+import RoomList from '../components/RoomList';
 
 // redux
-import { setRoomId } from '../redux/actions/roomAction';
+import { setRoomId, clearMessage } from '../store/actions/roomAction';
 
 // etc
-import { history } from '../utils';
-import { reqAddRoom, reqRooms } from '../controllers/socket';
+import { reqAddRoom, reqRooms, reqEnterRoom } from '../controllers/socket';
 
-export interface Props extends RouteProps {
+export interface Props extends RouteComponentProps {
   room: any;
   roomId?: string;
   user?: string;
@@ -31,12 +30,14 @@ export class ChoiceChatRoom extends Component<Props, States> {
   };
 
   componentWillMount() {
-    if (!this.props.user) {
+    const { history, user } = this.props;
+    if (!user) {
       history.push('/');
       return;
     }
 
     setRoomId();
+    clearMessage();
     reqRooms();
   }
 
@@ -49,14 +50,21 @@ export class ChoiceChatRoom extends Component<Props, States> {
   }
 
   enterRoom = (roomId: string) => {
-    setRoomId(roomId);
+    reqEnterRoom(roomId);
   }
 
-  componentWillReceiveProps(nextProps: Props) {
-    const { roomId } = nextProps;
-    if (roomId) {
-      history.push(`/room/${roomId}`);
+  shouldComponentUpdate(nextProps: Props) {
+    const { history, roomId } = this.props;
+    const { roomId: nextRoomId } = nextProps;
+    if (nextRoomId) {
+      if (roomId) {
+        clearMessage();
+      }
+      history.push(`/room/${nextRoomId}`);
+      return false;
     }
+
+    return true;
   }
 
   onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -65,7 +73,7 @@ export class ChoiceChatRoom extends Component<Props, States> {
     this.setState({ value });
   }
 
-  onInputKeyPress = (e:KeyboardEvent<HTMLInputElement>) => {
+  onInputKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
 
     if (e.keyCode === 13 && !e.shiftKey) {
       e.preventDefault();

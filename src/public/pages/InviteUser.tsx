@@ -1,17 +1,16 @@
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import { RouteProps } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 import React, { Component, ReactNode } from 'react';
 
 // models
-import { StoreState } from '../../models/client';
-import { IUser, IInvite, IRoom } from '../../models/server';
+import { StoreState } from 'models/client';
+import { IUser, IInvite, IRoom } from 'models/server';
 
 // etc
-import { history } from '../utils';
 import { reqUsers, reqInvite } from '../controllers/socket';
 
-export interface Props extends RouteProps{
+export interface Props extends RouteComponentProps {
   room?: IRoom;
   roomId?: string;
   user?: string;
@@ -21,7 +20,7 @@ export interface Props extends RouteProps{
 export class InviteUser extends Component<Props> {
 
   componentWillMount() {
-    const { roomId } = this.props;
+    const { roomId, history } = this.props;
 
     if (!roomId) {
       history.push('/room');
@@ -31,14 +30,19 @@ export class InviteUser extends Component<Props> {
     reqUsers();
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  shouldComponentUpdate(nextProps: Props) {
+    const { history } = this.props;
+
     if (!nextProps.roomId) {
       history.push('/room');
+      return false;
     }
+
+    return true;
   }
 
   onInviteUser = (id: string) => {
-    const { roomId } = this.props;
+    const { roomId, history } = this.props;
     if (!roomId) {
       return;
     }
@@ -58,7 +62,6 @@ export class InviteUser extends Component<Props> {
     if (!users) {
       return [];
     }
-    console.log(users);
 
     const result: ReactNode[] = _.map(users, (user, id: string) => {
       const { room, roomId } = this.props;
@@ -67,7 +70,6 @@ export class InviteUser extends Component<Props> {
         return;
       }
       const { users: invitedUsers } = room[roomId];
-      console.log(invitedUsers);
       const userIds = _.map(invitedUsers, (_, userId) => userId);
 
       if (userIds.includes(id)) {
@@ -87,6 +89,7 @@ export class InviteUser extends Component<Props> {
         </div>
       </li>);
     });
+
     return result.filter(value => value);
   }
 

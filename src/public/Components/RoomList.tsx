@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { Component, ReactNode } from 'react';
-import { IRoom } from '../../models/server';
+import { IRoom } from 'models/server';
 
 export interface Props {
   rooms: IRoom;

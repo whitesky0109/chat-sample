@@ -1,20 +1,19 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import { RouteProps } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 
 // models
-import { IMessage, StoreState } from '../../models/client';
-import { IMessage as IServerMessage, IRoom } from '../../models/server';
+import { IMessage, StoreState } from 'models/client';
+import { IMessage as IServerMessage, IRoom } from 'models/server';
 
 // components
-import ChatHistory from '../Components/ChatHistory';
-import ChatInput from '../Components/ChatInput';
+import ChatHistory from '../components/ChatHistory';
+import ChatInput from '../components/ChatInput';
 
 // etc
-import { history } from '../utils';
-import socket, { reqRooms, reqSendMessage } from '../controllers/socket';
+import socket, { reqRooms, reqSendMessage, reqLeaveRoom } from '../controllers/socket';
 
-export interface Props extends RouteProps {
+export interface Props extends RouteComponentProps {
   room?: IRoom;
   roomId?: string;
   user?: string;
@@ -28,20 +27,27 @@ export class ChatRoom extends Component<Props> {
 
     reqRooms(roomId);
     if (!user) {
-      history.push('/');
+      this.props.history.push('/');
     } else if (!roomId) {
-      history.push('/room');
+      this.props.history.push('/room');
     }
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  shouldComponentUpdate(nextProps: Props) {
     const { user, roomId } = nextProps;
+    const { history } = this.props;
 
     if (!user) {
       history.push('/');
-    } else if (!roomId) {
-      history.push('/room');
+      return false;
     }
+
+    if (!roomId) {
+      history.push('/room');
+      return false;
+    }
+
+    return true;
   }
 
   onSendMessage = (msg: IMessage) => {
@@ -50,8 +56,16 @@ export class ChatRoom extends Component<Props> {
   }
 
   onInvite = () => {
-    const { roomId } = this.props;
+    const { roomId, history } = this.props;
     history.push(`/room/${roomId}/invite`);
+  }
+
+  leaveRoom = () => {
+    const { roomId } = this.props;
+
+    if (roomId) {
+      reqLeaveRoom(roomId);
+    }
   }
 
   render() {
@@ -71,6 +85,7 @@ export class ChatRoom extends Component<Props> {
 
     return <>
       <button onClick={this.onInvite} >inVite</button>
+      <button onClick={this.leaveRoom} >leave</button>
 
       <ChatHistory messages={messages ? messages : []} />
       <ChatInput onSendMessage={this.onSendMessage} />
@@ -83,6 +98,7 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state: StoreState) => {
   const { room, user } = state;
+
   return {
     room: room.room,
     user: user.user,

@@ -1,18 +1,17 @@
 import { connect } from 'react-redux';
-import { RouteProps } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 import React, { Component, ChangeEvent, ReactNode, KeyboardEvent } from 'react';
 
 // models
-import { StoreState } from '../../models/client';
+import { StoreState } from 'models/client';
 
 // etc
-import { history } from '../utils';
 import { reqUserLogin } from '../controllers/socket';
 
 // image
 const logo = require('../static/user.png');
 
-export interface Props extends RouteProps {
+export interface Props extends RouteComponentProps {
   user?: string;
 }
 
@@ -47,15 +46,22 @@ export class Login extends Component<Props, States> {
   }
 
   componentWillMount() {
-    if (this.props.user) {
+    const { user, history } = this.props;
+
+    if (user) {
       history.push('/room');
     }
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  shouldComponentUpdate(nextProps: Props) {
+    const { history } = this.props;
+
     if (nextProps.user) {
       history.push('/room');
+      return false;
     }
+
+    return true;
   }
 
   render(): ReactNode {

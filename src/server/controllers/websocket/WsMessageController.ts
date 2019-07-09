@@ -66,12 +66,39 @@ export class WsMessageController {
   addRoom(@ConnectedSocket() socket: SocketIO.Socket, @MessageBody() message: any) {
     const rid = uid();
     let userId = this.userSrv.getUserIdBySockId(socket.id);
-    userId = userId ? userId : 'Unknowen';
+    userId = userId ? userId : 'Unknown';
 
     this.roomSrv.addRoom(rid, message.name, userId);
-    this.roomSrv.loginUser(rid, userId);
 
     socket.emit('room', this.roomSrv.getRooms(userId));
+  }
+
+  @OnMessage('room/in')
+  enterRoom(@ConnectedSocket() socket: SocketIO.Socket, @MessageBody() message: any) {
+    const userId = this.userSrv.getUserIdBySockId(socket.id);
+    if (!userId || !message) {
+      this.loggerSrv.info('user not found');
+      return;
+    }
+
+    const roomId = message.id;
+    this.roomSrv.loginUser(roomId, userId);
+
+    socket.emit('room/in', roomId);
+  }
+
+  @OnMessage('room/out')
+  leaveRoom(@ConnectedSocket() socket: SocketIO.Socket, @MessageBody() message: any) {
+    const userId = this.userSrv.getUserIdBySockId(socket.id);
+    if (!userId || !message) {
+      this.loggerSrv.info('user not found');
+      return;
+    }
+
+    const roomId = message.id;
+    this.roomSrv.logoutUser(roomId, userId);
+
+    socket.emit('room/out', roomId);
   }
 
   @OnMessage('room/message')
@@ -106,10 +133,15 @@ export class WsMessageController {
   inviteUser(@MessageBody() invite: IInvite,
   ) {
     const allUser = this.userSrv.getUsers();
-    const { roomId, users } = invite;
-    this.roomSrv.loginUsers(roomId, users);
+    const { roomId, users: inviteUsers } = invite;
+    const room = this.roomSrv.getRoom(roomId);
 
-    for (const userId of users) {
+    if (!room) {
+      return;
+    }
+    this.roomSrv.loginUsers(roomId, inviteUsers);
+
+    for (const userId in room.users) {
       const sockId = allUser[userId];
 
       if (sockId) {

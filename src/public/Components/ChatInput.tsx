@@ -1,7 +1,7 @@
 import React, { Component, ChangeEvent, KeyboardEvent } from 'react';
 
 // Models
-import { IMessage } from '../../models/client';
+import { IMessage } from 'models/client';
 
 export interface Props {
   onSendMessage: (msg: IMessage) => void;

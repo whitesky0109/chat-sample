@@ -20,7 +20,9 @@ export default class RoomService implements IService {
     this.listCache[id] = {
       name,
       creator,
-      users: {},
+      users: {
+        [creator]: null,
+      },
     };
   }
 
@@ -33,11 +35,14 @@ export default class RoomService implements IService {
   }
 
   public getRoomByUserId(userId: string) {
-    const result: IRoom = {};
+    let result: IRoom | undefined;
 
     for (const roomId in this.listCache) {
       for (const uid in this.listCache[roomId].users) {
         if (uid === userId) {
+          if (!result) {
+            result = {};
+          }
           result[roomId] = this.listCache[roomId];
         }
       }
@@ -60,9 +65,16 @@ export default class RoomService implements IService {
     const room = this.getRoom(roomId);
     const sockId = this.userService.getSockIdById(userId);
 
+    const rooms = this.getRoomByUserId(userId);
+    if (rooms) {
+      for (const roomId in rooms) {
+        this.logoutUser(roomId, userId);
+      }
+    }
+
     if (userId && room) {
       room.users[userId] = sockId;
-      this.loggerService.info(`[${room.name}] Chat room logined ${userId}`);
+      this.loggerService.info(`[${room.name}] Chat room login: ${userId}`);
       return true;
     }
 
@@ -80,6 +92,7 @@ export default class RoomService implements IService {
 
     if (userId && room) {
       room.users[userId] = null;
+      this.loggerService.info(`[${room.name}] Chat room logout: ${userId}`);
       return true;
     }
 

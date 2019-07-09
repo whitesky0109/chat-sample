@@ -2,12 +2,10 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import { Provider } from 'react-redux';
 
-import store from './redux/store';
 import './controllers/socket';
+import store from './store';
 
 import PageRouter from './PageRouter';
-
-import './sass/index.scss';
 
 ReactDom.render(
 

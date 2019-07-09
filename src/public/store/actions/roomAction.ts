@@ -1,10 +1,11 @@
-import { IRoom, IMessage } from '../../../models/server';
-import store from '../store';
+import store from '..';
+import { IRoom, IMessage } from 'models/server';
 
 export enum ROOM_ACTION_TYPES {
   SET_ROOMS = 'SET_ROOMS',
   SET_ROOM = 'SET_ROOM',
   ADD_MESSAGE = 'ADD_MESSAGE',
+  CLEAR_MESSAGE = 'CLEAR_MESSAGE',
 }
 
 export interface RoomPayload {
@@ -18,6 +19,16 @@ export interface RoomAction {
   type: ROOM_ACTION_TYPES;
   payload: RoomPayload;
 }
+
+export const onRecvRoom = (room?: IRoom) => {
+  const msg: RoomAction = {
+    type: ROOM_ACTION_TYPES.SET_ROOMS,
+    payload: {
+      room,
+    },
+  };
+  store.dispatch(msg);
+};
 
 export const setRoomId = (roomId?: string) => {
   const msg: RoomAction = {
@@ -39,12 +50,10 @@ export const addMessage = (message: IMessage) => {
   store.dispatch(msg);
 };
 
-export const onRecvRoom = (room?: IRoom) => {
+export const clearMessage = () => {
   const msg: RoomAction = {
-    type: ROOM_ACTION_TYPES.SET_ROOMS,
-    payload: {
-      room,
-    },
+    type: ROOM_ACTION_TYPES.CLEAR_MESSAGE,
+    payload: {},
   };
   store.dispatch(msg);
 };

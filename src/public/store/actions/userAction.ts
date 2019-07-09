@@ -1,9 +1,9 @@
-import { IUser } from '../../../models/server';
-import store from '../store';
+import store from 'public/store';
+import { IUser } from 'models/server';
 
 export enum USER_ACTION_TYPES {
-  SET_USERS = 'SET_USERS',
   SET_USER = 'SET_USER',
+  SET_USERS = 'SET_USERS',
 }
 
 export interface UserPayload {

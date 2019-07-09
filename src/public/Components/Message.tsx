@@ -1,7 +1,7 @@
 import React, { Component, ReactNode } from 'react';
 
 // models
-import { IMessage } from '../../models/server';
+import { IMessage } from 'models/server';
 
 export interface Props extends IMessage {
 

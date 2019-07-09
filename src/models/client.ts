@@ -1,5 +1,5 @@
-import { UserPayload } from '../public/redux/actions/userAction';
-import { RoomPayload } from '../public/redux/actions/roomAction';
+import { UserPayload } from 'public/store/actions/userAction';
+import { RoomPayload } from 'public/store/actions/roomAction';
 
 export interface IMessage {
   roomId?: string;

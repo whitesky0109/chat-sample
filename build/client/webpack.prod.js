@@ -53,8 +53,15 @@ conf = Object.assign(conf, {
                 sourceMap: false, preserveUrl: false
             }),
             {
-                test: /\.(png|jpg|gif|ttf|eot|svg|woff(2)?)(\?[a-z0-9=&.]+)?$/,
-                loader: 'file-loader',
+                test: /\.(png|jpg|gif?)(\?[a-z0-9=&.]+)?$/,
+                use: [{
+                    loader: 'file-loader',
+                    options: {
+                      name: '[name].[ext]',
+                      outputPath: '/',    // where the fonts will go
+                      publicPath: '/public'       // override the default path
+                    }
+                }]
             },
         ]
     },
@@ -65,11 +72,11 @@ conf = Object.assign(conf, {
             filename: "index.css"
         }),
         new CopyWebpackPlugin([
-            { from: './fonts/*', },
+            { from: './public/fonts/*', to: '..' },
         ]),
 
         new HtmlWebpackPlugin({
-            template: `index.html`,
+            template: `public/index.html`,
             filename: 'index.html',
             inject: 'body',
         }),

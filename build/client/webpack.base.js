@@ -8,16 +8,20 @@ module.exports = {
   target: 'web',
   devtool: "source-map",
 
-  context: resolve(path.join('src', 'public')),
+  context: resolve(path.join('src')),
 
   entry: {
-    app: './index.tsx',
-    style: './sass/index.scss',
+    app: './public/index.tsx',
+    style: './public/sass/index.scss',
   },
 
   resolve: {
-    extensions: ['.scss', '.ts', '.tsx', '.es6', '.js', '.json', '.svg', '.woff2', '.png', '.html'],
-  },
+    extensions: ['.scss', '.ts', '.tsx', '.es6', '.js', '.jsx', '.json', '.svg', '.woff2', '.png', '.html'],
+    modules: [
+      'src',
+      'node_modules',
+    ],
+ },
 
   output: {
     path: resolve('dist/public'),
