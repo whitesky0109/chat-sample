@@ -1,7 +1,7 @@
 import { Service } from 'typedi';
 import { LoggerService } from '..';
 import { UserService } from '.';
-import { IService, IRoom } from '../../../models/server';
+import { IService, IRoom } from 'models/server';
 
 @Service()
 export default class RoomService implements IService {

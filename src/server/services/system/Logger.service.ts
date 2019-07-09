@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { Logger, format, createLogger, transports } from 'winston';
 import { Service } from 'typedi';
-import { IService } from '../../../models/server';
+import { IService } from 'models/server';
 
 @Service()
 export default class LoggerService implements IService {

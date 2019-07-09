@@ -9,7 +9,7 @@ import 'reflect-metadata';
 import { Service } from 'typedi';
 import { SettingService, LoggerService } from '.';
 import { EventEmitter } from 'events';
-import { IService } from '../../../models/server';
+import { IService } from 'models/server';
 
 @Service()
 export default class StorageService extends EventEmitter implements IService {

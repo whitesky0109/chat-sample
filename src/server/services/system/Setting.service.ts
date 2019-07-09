@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { Service } from 'typedi';
-import { IService } from '../../../models/server';
+import { IService } from 'models/server';
 import { LoggerService } from '.';
 
 @Service()
@@ -14,18 +14,6 @@ export default class SettingService implements IService {
 
   init(): Promise<any> {
     return Promise.resolve();
-  }
-
-  /**
-   * Create a `uid`
-   *
-   * @param { Number } len
-   * @return { String } uid
-   */
-  public uid(len?: number): string {
-    // create uuid
-    len = len || 7;
-    return Math.random().toString(35).substr(2, len);
   }
 
   loadSettingFile(): any {

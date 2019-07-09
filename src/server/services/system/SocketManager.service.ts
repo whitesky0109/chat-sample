@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { Service } from 'typedi';
-import { IService } from '../../../models/server';
+import { IService } from 'models/server';
 import { LoggerService } from '.';
 
 @Service()

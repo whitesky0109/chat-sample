@@ -1,6 +1,6 @@
 import { OnConnect, SocketController, ConnectedSocket, OnDisconnect, OnMessage, MessageBody } from 'socket-controllers';
-import { SocketManagerService, LoggerService, UserService, RoomService } from '../../services';
-import { IMessage, IInvite } from '../../../models/server';
+import { SocketManagerService, LoggerService, UserService, RoomService } from 'server/services';
+import { IMessage, IInvite } from 'models/server';
 const uid = require('uid');
 
 @SocketController('/chat')

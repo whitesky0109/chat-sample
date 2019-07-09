@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { Controller, Get, Render } from 'routing-controllers';
-import { LoggerService } from '../../services';
+import { LoggerService } from 'server/services';
 
 @Controller('')
 export class RootController {

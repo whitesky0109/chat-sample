@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { Service } from 'typedi';
 import { EventEmitter } from 'events';
-import { IMigrationLogs, IMigrationLog, IService } from '../../../models/server';
+import { IMigrationLogs, IMigrationLog, IService } from 'models/server';
 import migrationLogRepository from './repositories/migrationLog.repository';
 import StorageService from './Storage.service';
 import { LoggerService } from '.';

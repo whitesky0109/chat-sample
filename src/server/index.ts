@@ -14,7 +14,7 @@ const cors = require('cors');
 const path = require('path');
 const open = require('open');
 
-import { IService } from '../models/server';
+import { IService } from 'models/server';
 import './controllers';
 import {
   // System Services

@@ -1,7 +1,7 @@
 
 import 'reflect-metadata';
 import { Service } from 'typedi';
-import { IRepository, IMigration, IService, IMigrationLog } from '../../../../models/server';
+import { IRepository, IMigration, IService, IMigrationLog } from 'models/server';
 import StorageService from '../Storage.service';
 import { LoggerService } from '..';
 const { dataType } = require('db-migrate-shared');
