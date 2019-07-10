@@ -124,7 +124,7 @@ export class InviteUser extends Component<Props> {
       ? <ul className="list">
         {this.renderList()}
       </ul>
-      : <>does not exist User</>;
+      : <>초대할 수 있는 사용자가 없습니다.</>;
 
     return (
       <div className="container">

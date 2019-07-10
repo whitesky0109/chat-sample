@@ -18,6 +18,9 @@ export interface Props extends RouteComponentProps {
   room: any;
   roomId?: string;
   user?: string;
+
+  setRoomId: typeof setRoomId;
+  clearMessage: typeof clearMessage;
 }
 
 export interface States {
@@ -30,7 +33,7 @@ export class ChoiceChatRoom extends Component<Props, States> {
   };
 
   componentWillMount() {
-    const { history, user } = this.props;
+    const { history, user, setRoomId, clearMessage } = this.props;
     if (!user) {
       history.push('/');
       return;
@@ -141,6 +144,8 @@ export class ChoiceChatRoom extends Component<Props, States> {
 }
 
 const mapDispatchToProps = {
+  setRoomId,
+  clearMessage,
 };
 
 const mapStateToProps = (state: StoreState) => {

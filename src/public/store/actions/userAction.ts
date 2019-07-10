@@ -16,26 +16,18 @@ export interface UserAction {
   payload: UserPayload;
 }
 
-export const onRecvLogin = (user?: string) => {
-  const msg: UserAction = {
-    type: USER_ACTION_TYPES.SET_USER,
-    payload: {
-      user,
-    },
-  };
-  store.dispatch(msg);
-};
+export const onRecvLogin = (user?: string): UserAction => ({
+  type: USER_ACTION_TYPES.SET_USER,
+  payload: {
+    user,
+  },
+});
 
-export const onRecvUsers = (users?: IUser) => {
-  const msg: UserAction = {
-    type: USER_ACTION_TYPES.SET_USERS,
-    payload: {
-      users,
-    },
-  };
-  store.dispatch(msg);
-};
+export const onRecvUsers = (users?: IUser): UserAction => ({
+  type: USER_ACTION_TYPES.SET_USERS,
+  payload: {
+    users,
+  },
+});
 
-export const onRecvLogout = () => {
-  onRecvLogin();
-};
+export const onRecvLogout = () => onRecvLogin();

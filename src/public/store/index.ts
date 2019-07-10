@@ -16,10 +16,10 @@ const store: Store = createStore(
 );
 
 export const clearAll = () => {
-  onRecvLogin();
-  setRoomId();
-  onRecvRoom();
-  onRecvUsers();
+  store.dispatch(onRecvLogin());
+  store.dispatch(setRoomId());
+  store.dispatch(onRecvRoom());
+  store.dispatch(onRecvUsers());
 };
 
 export default store;

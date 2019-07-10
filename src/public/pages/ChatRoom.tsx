@@ -11,7 +11,7 @@ import ChatHistory from '../components/ChatHistory';
 import ChatInput from '../components/ChatInput';
 
 // etc
-import socket, { reqRooms, reqSendMessage, reqLeaveRoom } from '../controllers/socket';
+import { reqRooms, reqSendMessage, reqLeaveRoom } from '../controllers/socket';
 
 export interface Props extends RouteComponentProps {
   room?: IRoom;
@@ -71,7 +71,7 @@ export class ChatRoom extends Component<Props> {
 
     if (!roomId || !room) {
       return (
-        <> </>
+        <> 잘못된 접근</>
       );
     }
 
@@ -95,7 +95,7 @@ export class ChatRoom extends Component<Props> {
           </div>
           <div className="about">
             <div className="chat-with">{room[roomId].name}</div>
-            <div className="chat-num-messages">created by {user}</div>
+            <div className="chat-num-messages">created by {room[roomId].creator}</div>
           </div>
         </div>
         <div className="btn-group">

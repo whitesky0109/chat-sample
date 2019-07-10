@@ -7,7 +7,7 @@ import { IInvite, IUser, IRoom, IMessage as IServerMessage } from 'models/server
 // redux
 import { onRecvLogin, onRecvUsers, onRecvLogout } from 'public/store/actions/userAction';
 import { addMessage, onRecvRoom, setRoomId } from 'public/store/actions/roomAction';
-import { clearAll } from 'public/store';
+import store, { clearAll } from 'public/store';
 
 export const socket: SocketIOClient.Socket = io('/chat');
 
@@ -21,31 +21,31 @@ socket.on('disconnect', () => {
 });
 
 socket.on('login', (user: string) => {
-  onRecvLogin(user);
+  store.dispatch(onRecvLogin(user));
 });
 
 socket.on('logout', () => {
-  onRecvLogout();
+  store.dispatch(onRecvLogout());
 });
 
 socket.on('room', (room: IRoom) => {
-  onRecvRoom(room);
+  store.dispatch(onRecvRoom(room));
 });
 
 socket.on('room/in', (roomId: string) => {
-  setRoomId(roomId);
+  store.dispatch(setRoomId(roomId));
 });
 
 socket.on('room/out', (roomId: string) => {
-  setRoomId();
+  store.dispatch(setRoomId());
 });
 
 socket.on('room/message', (msg: IServerMessage) => {
-  addMessage(msg);
+  store.dispatch(addMessage(msg));
 });
 
 socket.on('users', (users: IUser) => {
-  onRecvUsers(users);
+  store.dispatch(onRecvUsers(users));
 });
 
 export const reqUserLogin = (name: string) => {

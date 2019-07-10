@@ -10,7 +10,7 @@ import { reqUserLogin } from '../controllers/socket';
 import { clearAll } from 'public/store';
 
 // image
-const logo = require('../static/user.png');
+const logo = require('../static/logo.png');
 
 export interface Props extends RouteComponentProps {
   user?: string;

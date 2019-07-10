@@ -20,40 +20,28 @@ export interface RoomAction {
   payload: RoomPayload;
 }
 
-export const onRecvRoom = (room?: IRoom) => {
-  const msg: RoomAction = {
-    type: ROOM_ACTION_TYPES.SET_ROOMS,
-    payload: {
-      room,
-    },
-  };
-  store.dispatch(msg);
-};
+export const onRecvRoom = (room?: IRoom): RoomAction => ({
+  type: ROOM_ACTION_TYPES.SET_ROOMS,
+  payload: {
+    room,
+  },
+});
 
-export const setRoomId = (roomId?: string) => {
-  const msg: RoomAction = {
-    type: ROOM_ACTION_TYPES.SET_ROOM,
-    payload: {
-      roomId,
-    },
-  };
-  store.dispatch(msg);
-};
+export const setRoomId = (roomId?: string): RoomAction => ({
+  type: ROOM_ACTION_TYPES.SET_ROOM,
+  payload: {
+    roomId,
+  },
+});
 
-export const addMessage = (message: IMessage) => {
-  const msg: RoomAction = {
-    type: ROOM_ACTION_TYPES.ADD_MESSAGE,
-    payload: {
-      message,
-    },
-  };
-  store.dispatch(msg);
-};
+export const addMessage = (message: IMessage): RoomAction => ({
+  type: ROOM_ACTION_TYPES.ADD_MESSAGE,
+  payload: {
+    message,
+  },
+});
 
-export const clearMessage = () => {
-  const msg: RoomAction = {
-    type: ROOM_ACTION_TYPES.CLEAR_MESSAGE,
-    payload: {},
-  };
-  store.dispatch(msg);
-};
+export const clearMessage = (): RoomAction => ({
+  type: ROOM_ACTION_TYPES.CLEAR_MESSAGE,
+  payload: {},
+});
