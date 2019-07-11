@@ -1,8 +1,34 @@
-# 웹 기반 심플 채팅 어플리케이션
+# 프론트 엔드 개발자 사전 과제
 
 ![](./user_guide/cap15.gif)
 
-## 요구사항
+## 과제
+
+- 채팅 어플리케이션 만들기
+
+### 기능
+
+- 사용자는 첫 진입 시, ID를 입력하여 접속할 수 있다.
+- 채팅방 리스트에서 채팅방을 선택하여 들어갈 수 있다.
+- 채팅방에 다른 사용자를 초대할 수 있다.
+- 사용자는 채팅방에서 텍스트를 입력할 수 있다.
+- 사용자는 채팅방에서 이미지를 입력할 수 있다.
+
+### 과제 요구사항
+
+- Client side rendering으로 개발
+- 언어에 대한 제한은 없음
+- 서버 구현 방법에 대한 제한 없음 (REST API, Long Polling, Socket...)
+- 프론트엔드 구현 방법은 제한 없음 (Angular, React, Preact, Vue, jQuery...)
+- UI 구현에 대한 제약은 없음
+- 단위 테스트 필수, UI 테스트(Storybook, Selenium)와 통합 테스트는 선택
+- README.md 파일에 문제해결 전략 및 프로젝트 빌드, 실행 방법 명시
+
+### 예시 및 설명
+
+- 위 언급되지 않은 내용에 대해서는 자유롭게 작성할 수 있다.
+
+## 시스템 요구사항
 
 해당 프로젝트를 사용하기 위해서는 아래와 같은 프로그램이 필요하다.
 
@@ -32,7 +58,7 @@ npm run start # or yarn start
 
 ## 문제해결 전략
 
-### 개발 환경
+### 개발 환경 정의
 
 - 개발 언어 : Typescript
 - 빌드 시스템 : Webpack
@@ -40,28 +66,38 @@ npm run start # or yarn start
 - 사용 브라우저 : 크로미움 기반 브라우저 사용
   - Brave
   - Chrome
-- 주요 개발 오픈소스 라이브러리
-  - 프론트엔드 : React
-    - react-router : client-side rendering
-    - redux
-    - sass
-    - font-awesome
-  - 웹 서버 : Express.js
-    - socket.io
-    - socket-controllers
-    - routing-controllers
-    - sqlite3
-    - typedi : Typescript 또는 Javascript에서 의존성 주입(DI)을 사용
-  - 테스트(Jest)
-    - enzyme
 
-### 시스템 구조
+### 시스템 구조 설계
 
-### 컴포넌트 별 화면 레이어 구조
+![](./user_guide/systemArchitecture.png)
+
+### URL 별 화면 레이어 구조 설계
+
+![](./user_guide/ComponentAndRouter.png)
+
+### 소켓 메세지 API 설계
+
+| Event        | Description    |
+|--------------|----------------|
+| Login        | 입력한 계정으로 접속|
+| logout       | 로그아웃         |
+| room         | 채팅방 조회       |
+| room/new     | 채팅방 생성       |
+| room/in      | 채팅방 진입       |
+| room/out     | 채팅방 나가기      |
+| room/message | 채팅방 메세지 보내기 |
+| room/invite  | 채팅방 초대       |
+| users        | 사용자 조회       |
+
+[Message Payload](./docs/payload.md)
 
 ### 채팅방 메세지 이미지 / 텍스트 전송 전략
 
-### 테스트 전략
+- 기본 아이디어
+
+  - socket.io-client 라이브러리에서 ArrayBuffer와 Blob를 브라우저에서 지원
+
+- 브라우저에서 입력 된 파일이나 텍스트 이벤트를 수신하여 소켓 메세지에 포함하여 전달
 
 ### UI 스타일 참고 사이트
 
@@ -69,7 +105,49 @@ npm run start # or yarn start
 
 ### 디렉토리 구조
 
+```bash
+.
+├── build                  ----> # 개발 빌드 환경 설정
+│   ├── client             ----> # 웹 브라우저 개발 환경 설정
+│   └── server             ----> # 서버 개발 환경 설정
+├── dist
+│   ├── public             ----> # 프론트엔드 배포 결과물
+│   └── server             ----> # 백엔드(서버) 배포 결과물)
+├── jest.config.js         ----> # 단위 테스트 환경 설정
+├── package.json
+├── src
+│   ├── main.ts            ----> # 서버 시작 코드
+│   ├── models             ----> # 서버 및 클라이언트 데이터 타입 정의
+│   ├── public             ----> # 프론트엔드 개발 코드 모음
+│   │   ├── components
+│   │   ├── controllers    ----> # 백엔드 데이터 통신
+│   │   ├── fonts
+│   │   ├── index.html
+│   │   ├── index.tsx      ----> # 프론트엔드 시작 스크립트
+│   │   ├── pages          ----> # URL 별 화면 모음
+│   │   ├── sass           ----> # 스타일 코드
+│   │   ├── static         ----> # 이미지 파일 모음
+│   │   └── store          ----> # 프론트엔드 데이터 저장소
+│   ├── server             ----> # 서버 개발 코드 모음
+│   │   ├── controllers    ----> # REST Api 및 Socket 정의
+│   │   │   ├── rest
+│   │   │   └── websocket
+│   │   └── services       ----> # 백엔드 서비스 정의
+│   │       ├── chat
+│   │       └── system
+│   └── test               ----> # 단위 테스트 설정 코드
+├── tsconfig.json
+├── tslint.json
+└── user_guide             ----> # 사용자 가이트 모음
+```
+
 ## 기타
+
+### 테스트
+
+```bash
+npm run test # or yarn test
+```
 
 ### 개발자용 서버 개발 가이드
 
