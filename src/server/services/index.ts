@@ -1,8 +1,6 @@
 import 'reflect-metadata';
 // System Services
 import {
-    SettingService,
-    StorageService,
     LoggerService,
     SocketManagerService,
 } from './system';
@@ -14,9 +12,7 @@ import {
 } from './chat';
 
 export {
-    StorageService,
     SocketManagerService,
-    SettingService,
     LoggerService,
     UserService,
     RoomService,

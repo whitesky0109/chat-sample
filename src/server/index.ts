@@ -18,13 +18,12 @@ import { IService } from 'models/server';
 import './controllers';
 import {
   // System Services
-  SettingService, StorageService, LoggerService,
+  LoggerService,
   // Message Processing Services
   SocketManagerService,
   // Chat Services
   UserService, RoomService,
 } from './services';
-import StorageMigrationService from './services/system/StorageMigration.service';
 import { WsMessageController } from './controllers/websocket/WsMessageController';
 
 export default class MainServer extends EventEmitter {
@@ -72,7 +71,8 @@ export default class MainServer extends EventEmitter {
 
     /* register service instance */
     this.addServices();
-    this.port = port ? parseInt(port, 10) : Container.get(SettingService).getPort();
+
+    this.port = port ? parseInt(port, 10) : 4000;
   }
 
   public addMiddleware(middleware: any): void {
@@ -92,9 +92,6 @@ export default class MainServer extends EventEmitter {
 
     const registerServices = [
       /* System Services */
-      SettingService,
-      StorageService,
-      StorageMigrationService,
       UserService,
       RoomService,
       SocketManagerService,

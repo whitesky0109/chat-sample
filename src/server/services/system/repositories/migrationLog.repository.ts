@@ -2,7 +2,6 @@
 import 'reflect-metadata';
 import { Service } from 'typedi';
 import { IRepository, IMigration, IService, IMigrationLog } from 'models/server';
-import StorageService from '../Storage.service';
 import { LoggerService } from '..';
 const { dataType } = require('db-migrate-shared');
 
@@ -10,7 +9,6 @@ const { dataType } = require('db-migrate-shared');
 export default class MigrationLogRepository implements IRepository, IService {
   public tableName: string = 'migration_log';
   constructor(private logger: LoggerService,
-              private storageSrv: StorageService,
     ) {
     this.logger.info('created Migration_logRepository');
   }
@@ -42,15 +40,5 @@ export default class MigrationLogRepository implements IRepository, IService {
         }],
     },
     ];
-  }
-
-  public getMigrationLog(): Promise<IMigrationLog[]> {
-    return new Promise((resolve) => {
-      const { db } = this.storageSrv;
-      db['all']('select * from migration_log',
-                (err: any, logs: IMigrationLog[]) => {
-                  if (err) { resolve([]); } else { resolve(logs); }
-                });
-    });
   }
 }
