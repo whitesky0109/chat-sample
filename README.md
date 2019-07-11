@@ -64,8 +64,20 @@ npm run start # or yarn start
 - 빌드 시스템 : Webpack
 - 개발 도구 : Visual Studio Code
 - 사용 브라우저 : 크로미움 기반 브라우저 사용
-  - Brave
+  - [Brave](https://brave.com/)
   - Chrome
+- 각 환경 별 주요 라이브러리 의존성
+  - 프론트엔드 : [React](https://github.com/facebook/react)
+    - [socket.io-client](https://socket.io/docs/client-api/)
+    - [redux](https://github.com/reduxjs/redux)
+    - [sass](https://sass-lang.com/)
+    - [font-awesome](https://fontawesome.com/v4.7.0/)
+  - 백엔드 : [Express.js](https://expressjs.com/ko/)
+    - [socket.io](https://github.com/socketio/socket.io)
+    - [socket-controllers](https://github.com/typestack/socket-controllers)
+    - [routing-controllers](https://github.com/typestack/routing-controllers)
+  - 테스트 : [jest](https://jestjs.io)
+    - [enzyme](https://airbnb.io/enzyme/)
 
 ### 시스템 구조 설계
 
@@ -103,7 +115,7 @@ npm run start # or yarn start
 
 <https://codepen.io/vhtkr/pen/eaLBNK>
 
-### 디렉토리 구조
+### 프로젝트 디렉토리 구조
 
 ```bash
 .
