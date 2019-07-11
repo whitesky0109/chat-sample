@@ -95,6 +95,19 @@ npm run start # or yarn start
 
 ![](./user_guide/systemArchitecture.png)
 
+### Client side rendering 라우팅 설계
+
+| URL                    | Page Description |
+|------------------------|------------------|
+| /#/                    | 로그인 페이지       |
+| /#/room                | 채팅방 리스트 페이지  |
+| /#/room/:roomId        | 채팅방 페이지       |
+| /#/room/:roomId/Invite | 채팅방 초대 패아자   |
+
+#### 잘못된 접근 라우팅 전략
+
+모든 잘못된 접근 시 로그인 페이지로 이동
+
 ### URL 별 화면 레이어 구조 설계
 
 ![](./user_guide/ComponentAndRouter.png)
