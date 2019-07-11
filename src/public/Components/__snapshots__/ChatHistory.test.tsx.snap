@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChatHistory matches snapshot 1`] = `
+<div
+  className="chat-history"
+>
+  <ul>
+    <li
+      className="clearfix"
+      key="0"
+    >
+      <div
+        className="msg-data align-left"
+      >
+        <span
+          className="msg-name"
+        >
+          userid
+        </span>
+        <span
+          className="msg-time"
+        >
+          1970년 01월 01일 (Thu) 09:00:00
+        </span>
+      </div>
+      <div
+        className="msg other-msg float-left"
+      >
+        <Message
+          date={1970-01-01T00:00:00.000Z}
+          isMy={false}
+          message="my message"
+          type="text"
+          userId="userid"
+        />
+      </div>
+    </li>
+  </ul>
+  <div />
+</div>
+`;

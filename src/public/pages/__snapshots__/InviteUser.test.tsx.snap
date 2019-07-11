@@ -1,0 +1,112 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InviteUser 기본 동작 matches snapshot 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <Connect(InviteUser)
+    history={
+      Object {
+        "goBack": [MockFunction],
+      }
+    }
+    location={[MockFunction]}
+    match={[MockFunction]}
+  >
+    <InviteUser
+      history={
+        Object {
+          "goBack": [MockFunction],
+        }
+      }
+      location={[MockFunction]}
+      match={[MockFunction]}
+      room={
+        Object {
+          "roomid": Object {
+            "creator": "userid",
+            "name": "roomname",
+            "users": Object {
+              "userid": "sockid1",
+            },
+          },
+        }
+      }
+      roomId="roomid"
+      user="userid"
+      users={
+        Object {
+          "userid": "sockid1",
+        }
+      }
+    >
+      <div
+        className="container"
+      >
+        <div
+          className="header"
+        >
+          <div
+            className="title"
+          >
+            <div
+              className="user-icon"
+            >
+              <i
+                className="fa fa fa-user"
+              />
+            </div>
+            <div
+              className="about"
+            >
+              <div
+                className="chat-with"
+              >
+                Invite User
+              </div>
+              <div
+                className="chat-num-messages"
+              >
+                Room Name : 
+                roomname
+              </div>
+            </div>
+          </div>
+          <div
+            className="btn-group"
+          >
+            <button
+              className="btn"
+              onClick={[Function]}
+              title="취소"
+            >
+              <i
+                className="fa fa-share-square-o"
+              />
+            </button>
+          </div>
+        </div>
+        <div
+          className="people-list"
+          id="people-list"
+        >
+          <div
+            className="users"
+          >
+            초대할 수 있는 사용자가 없습니다.
+          </div>
+        </div>
+      </div>
+    </InviteUser>
+  </Connect(InviteUser)>
+</Provider>
+`;

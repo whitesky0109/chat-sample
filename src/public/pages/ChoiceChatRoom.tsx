@@ -15,7 +15,7 @@ import { setRoomId, clearMessage } from '../store/actions/roomAction';
 import { reqAddRoom, reqRooms, reqEnterRoom, reqUserLogout } from '../controllers/socket';
 
 export interface Props extends RouteComponentProps {
-  room: any;
+  room?: any;
   roomId?: string;
   user?: string;
 

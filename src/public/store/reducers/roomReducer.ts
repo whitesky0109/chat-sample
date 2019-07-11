@@ -7,7 +7,10 @@ export const initialState: RoomPayload = {
 };
 
 // reducer
-export const roomReducer = (state = initialState, action: RoomAction): RoomPayload => {
+export const roomReducer = (state = initialState, action?: RoomAction): RoomPayload => {
+  if (!action) {
+    return state;
+  }
   const { payload } = action;
 
   switch (action.type) {

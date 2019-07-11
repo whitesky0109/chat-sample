@@ -45,9 +45,7 @@ export default class ChatInput extends Component<Props, States> {
     const { files } = e.target;
 
     if (files) {
-      for (let i = 0; i < files.length; i += 1) {
-        const file = files.item(i);
-
+      for (const file of (files as any)) {
         if (file) {
           this.sendMessage(file.type, file);
         }

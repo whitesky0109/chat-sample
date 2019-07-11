@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChatInput matches snapshot 1`] = `
+<ChatInput
+  onSendMessage={
+    [MockFunction] {
+      "calls": Array [
+        Array [
+          Object {
+            "message": "abcdefg",
+            "type": "text",
+          },
+        ],
+        Array [
+          Object {
+            "message": File {},
+            "type": "image/png",
+          },
+        ],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
+      ],
+    }
+  }
+>
+  <div
+    className="chat-input clearfix"
+  >
+    <div
+      className="file-input"
+    >
+      <label
+        htmlFor="image"
+      >
+        <span
+          aria-hidden="true"
+          className="fa fa-upload"
+        />
+      </label>
+      <input
+        accept="image/*"
+        className="image-input"
+        id="image"
+        onChange={[Function]}
+        type="file"
+      />
+    </div>
+    <input
+      onChange={[Function]}
+      onKeyDown={[Function]}
+      placeholder="Type your message"
+      type="text"
+      value=""
+    />
+    <button
+      onClick={[Function]}
+    >
+      Send
+    </button>
+  </div>
+</ChatInput>
+`;

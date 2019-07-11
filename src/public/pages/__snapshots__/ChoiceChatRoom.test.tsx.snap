@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChoiceChatRoom matches snapshot 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <Connect(ChoiceChatRoom)
+    clearMessage={[MockFunction]}
+    history={
+      Object {
+        "goBack": [MockFunction],
+      }
+    }
+    location={[MockFunction]}
+    match={[MockFunction]}
+    setRoomId={[MockFunction]}
+  >
+    <ChoiceChatRoom
+      clearMessage={[Function]}
+      history={
+        Object {
+          "goBack": [MockFunction],
+        }
+      }
+      location={[MockFunction]}
+      match={[MockFunction]}
+      setRoomId={[Function]}
+      user="userId"
+    >
+       
+    </ChoiceChatRoom>
+  </Connect(ChoiceChatRoom)>
+</Provider>
+`;

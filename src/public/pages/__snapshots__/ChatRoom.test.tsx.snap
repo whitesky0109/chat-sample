@@ -1,0 +1,161 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChatRoom matches snapshot 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <Connect(ChatRoom)
+    history={
+      Object {
+        "goBack": [MockFunction],
+      }
+    }
+    location={[MockFunction]}
+    match={[MockFunction]}
+  >
+    <ChatRoom
+      history={
+        Object {
+          "goBack": [MockFunction],
+        }
+      }
+      location={[MockFunction]}
+      match={[MockFunction]}
+      room={
+        Object {
+          "roomid": Object {
+            "creator": "userid",
+            "name": "roomname",
+            "users": Object {
+              "userid": "sockid1",
+            },
+          },
+        }
+      }
+      roomId="roomid"
+      user="userid"
+    >
+      <div
+        className="header"
+      >
+        <div
+          className="title"
+        >
+          <div
+            className="user-icon"
+          >
+            <i
+              className="fa fa-users"
+            />
+          </div>
+          <div
+            className="about"
+          >
+            <div
+              className="chat-with"
+            >
+              roomname
+            </div>
+            <div
+              className="chat-num-messages"
+            >
+              created by 
+              userid
+            </div>
+          </div>
+        </div>
+        <div
+          className="btn-group"
+        >
+          <div>
+            <div>
+              사용자 수 : 
+              1
+            </div>
+            <div>
+              접속자 수 : 
+              1
+            </div>
+          </div>
+          <button
+            className="btn"
+            onClick={[Function]}
+            title="사용자 초대"
+          >
+            <i
+              className="fa fa-user"
+            />
+          </button>
+          <button
+            className="btn"
+            onClick={[Function]}
+            title="방 나가기"
+          >
+            <i
+              className="fa fa-sign-out"
+            />
+          </button>
+        </div>
+      </div>
+      <ChatHistory
+        messages={Array []}
+      >
+        <div
+          className="chat-history"
+        >
+          <ul />
+          <div />
+        </div>
+      </ChatHistory>
+      <ChatInput
+        onSendMessage={[Function]}
+      >
+        <div
+          className="chat-input clearfix"
+        >
+          <div
+            className="file-input"
+          >
+            <label
+              htmlFor="image"
+            >
+              <span
+                aria-hidden="true"
+                className="fa fa-upload"
+              />
+            </label>
+            <input
+              accept="image/*"
+              className="image-input"
+              id="image"
+              onChange={[Function]}
+              type="file"
+            />
+          </div>
+          <input
+            onChange={[Function]}
+            onKeyDown={[Function]}
+            placeholder="Type your message"
+            type="text"
+            value=""
+          />
+          <button
+            onClick={[Function]}
+          >
+            Send
+          </button>
+        </div>
+      </ChatInput>
+    </ChatRoom>
+  </Connect(ChatRoom)>
+</Provider>
+`;

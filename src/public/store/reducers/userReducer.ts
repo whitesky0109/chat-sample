@@ -5,7 +5,10 @@ export const initialState: UserPayload = {
 };
 
 // reducer
-export const userReducer = (state = initialState, action: UserAction): UserPayload => {
+export const userReducer = (state = initialState, action?: UserAction): UserPayload => {
+  if (!action) {
+    return state;
+  }
   const { type, payload } = action;
 
   switch (type) {

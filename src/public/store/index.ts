@@ -5,7 +5,7 @@ import { userReducer as user } from './reducers/userReducer';
 import { onRecvLogin, onRecvUsers } from './actions/userAction';
 import { setRoomId, onRecvRoom } from './actions/roomAction';
 
-const rootReducers =  combineReducers({
+export const rootReducers =  combineReducers({
   user,
   room,
 });

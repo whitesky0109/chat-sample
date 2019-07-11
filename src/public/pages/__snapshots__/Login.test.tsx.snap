@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Login matches snapshot 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <Connect(Login)
+    history={[MockFunction]}
+    location={[MockFunction]}
+    match={[MockFunction]}
+  >
+    <Login
+      history={[MockFunction]}
+      location={[MockFunction]}
+      match={[MockFunction]}
+    >
+      <div
+        className="container login"
+      >
+        <div>
+          <div
+            className="first"
+          >
+            <img
+              alt="User Icon"
+              id="icon"
+              src={
+                Object {
+                  "default": "test-file-stub",
+                }
+              }
+            />
+          </div>
+          <div
+            className="login-form"
+          >
+            <input
+              onChange={[Function]}
+              onKeyDown={[Function]}
+              placeholder="Type new your ID"
+              type="text"
+              value=""
+            />
+            <button
+              onClick={[Function]}
+            >
+              Connect
+            </button>
+          </div>
+        </div>
+      </div>
+    </Login>
+  </Connect(Login)>
+</Provider>
+`;

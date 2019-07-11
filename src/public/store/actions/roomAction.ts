@@ -1,4 +1,3 @@
-import store from '..';
 import { IRoom, IMessage } from 'models/server';
 
 export enum ROOM_ACTION_TYPES {

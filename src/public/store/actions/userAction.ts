@@ -1,4 +1,3 @@
-import store from 'public/store';
 import { IUser } from 'models/server';
 
 export enum USER_ACTION_TYPES {

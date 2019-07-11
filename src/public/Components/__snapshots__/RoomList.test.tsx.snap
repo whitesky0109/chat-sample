@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`채팅방 목록 matches snapshot 1`] = `
+<div
+  className="users"
+>
+  <div
+    className="empty"
+  />
+  <ul
+    className="list"
+  >
+    <li
+      className="user clearfix"
+      key="roomid1"
+      onClick={[Function]}
+    >
+      <div
+        className="user-icon"
+      >
+        <i
+          className="fa fa-users"
+        />
+      </div>
+      <div
+        className="about"
+      >
+        <div
+          className="name"
+        >
+          roomname
+        </div>
+        <div
+          className="status"
+        >
+          <i
+            className="fa fa-user"
+          />
+          <span>
+             created by 
+            userid
+          </span>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+`;

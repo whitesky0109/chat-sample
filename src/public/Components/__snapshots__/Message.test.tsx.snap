@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Message matches snapshot 1`] = `
+<div>
+  <img
+    alt=""
+    src="data:image/png;base64,AAAAAAAAAAAAAA=="
+  />
+</div>
+`;
