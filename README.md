@@ -102,7 +102,7 @@ npm run start # or yarn start
 | /#/                    | 로그인 페이지       |
 | /#/room                | 채팅방 리스트 페이지  |
 | /#/room/:roomId        | 채팅방 페이지       |
-| /#/room/:roomId/Invite | 채팅방 초대 패아자   |
+| /#/room/:roomId/Invite | 채팅방 초대 페이지   |
 
 #### 잘못된 접근 라우팅 전략
 
@@ -114,17 +114,17 @@ npm run start # or yarn start
 
 ### 소켓 메세지 API 설계
 
-| Event        | Description    |
-|--------------|----------------|
-| Login        | 입력한 계정으로 접속|
-| logout       | 로그아웃         |
+| Event        | Description     |
+|--------------|-----------------|
+| Login        | 입력한 계정으로 접속 |
+| logout       | 로그아웃          |
 | room         | 채팅방 조회       |
 | room/new     | 채팅방 생성       |
 | room/in      | 채팅방 진입       |
 | room/out     | 채팅방 나가기      |
 | room/message | 채팅방 메세지 보내기 |
-| room/invite  | 채팅방 초대       |
-| users        | 사용자 조회       |
+| room/invite  | 채팅방 초대        |
+| users        | 사용자 조회        |
 
 [Message Payload](./docs/payload.md)
 
